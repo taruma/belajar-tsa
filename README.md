@@ -1,8 +1,5 @@
 # belajar-tsa
-Learn hydrology and hydraulics with Python Notebook
 
-
-ini update dari branch readme-info
-
-Ini tulisan 1 dibuat dari branch update-readme
-
+Catatan: 
+- Berisikan _notebook_ atau _script_ yang berkaitan dengan teknik sumberdaya air (tsa)
+- notebook atau script yang disertakan dalam repo ini dibuat pribadi
