@@ -98,7 +98,7 @@ end
 
 %% Misc.. (wall_check, ...)
 % Boundary Condition Variable
-wall_check = false; % True for Wall Condition
+wall_check = true;  % True for Wall Condition
 highest = 0;        % Highest value (for graph boundary)
 
 %% Defining Variable and Initial Condition
@@ -235,7 +235,7 @@ for t = 1:tmax
     
     % Graph Generator
     if mod(t, tout) == 0
-%        subplot(2,1,1);
+        subplot(2,1,1);
         p1 = plot(val_x,h + chan_ev,'red');
         hold on
         p3 = plot(val_x,chan_ev, 'black');
@@ -248,16 +248,16 @@ for t = 1:tmax
         pause(0.001)
         hold off
 
-%         subplot(2,1,2);
-%         p2 = plot(val_x,Q,'green');
-%         hold on
-%         title('Q');
-%         axis manual
-%         axis ([1 imax -30 30]);
-%         xlabel('Grid');
-%         ylabel('Q (m3/s)');
-%         pause(0.001)
-%         hold off
+        subplot(2,1,2);
+        p2 = plot(val_x,Q,'green');
+        hold on
+        title('Q');
+        axis manual
+        axis ([1 imax -30 30]);
+        xlabel('Grid');
+        ylabel('Q (m3/s)');
+        pause(0.001)
+        hold off
 
     end
 end
