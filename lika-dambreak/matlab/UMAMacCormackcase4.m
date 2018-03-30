@@ -72,10 +72,10 @@ val_x = 1:imax;         % Absis value
 
 %% --- Channel and Datum Elevation
 % Input
-chan_up = 0;               % Channel elevation at grid 1 (left)
-slope1 = 0;                 % '-' mean ascending
+chan_up = -0.3;               % Channel elevation at grid 1 (left)
+slope1 = -0.3/lf;                 % '-' mean ascending
 slope2 = 0;                 % 
-sc = 30;    % Slope change at (lc) meter from left
+sc = 0.9*lf;    % Slope change at (lc) meter from left
 
 % Channel Elevation
 chan_ev = zeros(1, imax);   % Preset chan_ev
