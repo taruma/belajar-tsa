@@ -14,16 +14,16 @@ clear;      % Remove items from workspace, freeing up system memory
 
 %% --- Define Variable and Constant
 g = 9.81;   % Gravity Acceleration
-n = 0;      % Manning Slope
+n = 0.03;      % Manning Slope
 beta = 1;   % Correction
 
 %% --- Channel (Elevation and Properties)
 % --Water Elevation
-h1 = 2;     % Upstream head in (meter) elevation
-h2 = 1.5;    % Downstream head in (meter) elevation
+h1 = 5;     % Upstream head in (meter) elevation
+h2 = h1;    % Downstream head in (meter) elevation
 
 % --Channel Properties
-lf = 100;   % Length of channel in (meter)
+lf = 2000;   % Length of channel in (meter)
 m = 1;      % m of trapesium cross-section
 
 %% --- Secant Method
@@ -32,24 +32,24 @@ dy = 0.1;   % Delta y
 yit = 10;   % Iteration
 
 %% --- Grid and Time
-dx = 0.5;   % Grid length
-dt = 0.1;   % Time step
+dx = 100;   % Grid length
+dt = 10;   % Time step
 % -- Time
-time = 200;         % Duration simulation in seconds
+time = 2000;         % Duration simulation in seconds
 tone = 1/dt;        % (tone) iteration for one second
-tout = tone*1;    % Plotting each 'tout' second(s)
+tout = tone*1;      % Plotting each 'tout' second(s)
 % Grid/Time Step
 imax = lf/dx+1; % Total grid
 tmax = time/dt; % Time Step (iteration)
 
 %% --- Tidal properties
-periode = 5;
-ampli = 0.1;
+periode = 200;
+ampli = 0.5;
 
 %% --- Width and Position
 % INPUT
 lc = 80;    % Length of contraction in (meter) from left
-b1 = 10;     % Width b1
+b1 = 5;     % Width b1
 b2 = b1;    % Width b2
 
 % -- Assigning width value
@@ -72,9 +72,9 @@ val_x = 1:imax;         % Absis value
 
 %% --- Channel and Datum Elevation
 % Input
-chan_up = 0;               % Channel elevation at grid 1 (left)
-slope1 = 0;                 % '-' mean ascending
-slope2 = 0;                 %
+chan_up = 0.5;               % Channel elevation at grid 1 (left)
+slope1 = 0.5/2000;                 % '-' mean ascending
+slope2 = slope1;                 %
 sc = 0.9*lf;    % Slope change at (lc) meter from left
 
 % Channel Elevation
@@ -98,7 +98,7 @@ end
 
 %% Misc.. (wall_check, ...)
 % Boundary Condition Variable
-wall_check = true;  % True for Wall Condition
+wall_check = false;  % True for Wall Condition
 highest = 0;        % Highest value (for graph boundary)
 
 %% Defining Variable and Initial Condition
@@ -242,7 +242,7 @@ for t = 1:tmax
         p3 = plot(val_x,chan_ev, 'black');
         hold on
         axis manual
-        axis ([1 imax lowest-0.1 highest+0.1]);
+        axis ([1 imax lowest-0.1 highest+1]);
         title('Tidal Wave MacCormack Method');
         %xlabel('Grid');
         ylabel('Elevasi(m)');
