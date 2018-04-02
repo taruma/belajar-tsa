@@ -33,7 +33,7 @@ tout = tone*0.01;   % Plotting each 'tout' second(s)
 h1 = 1.5;   % Upstream head in (meter) elevation
 h2 = 1;     % Downstream head in (meter) elevation
             % --Channel Properties
-lf = 74;    % Length of channel in (meter)
+lf = 55;    % Length of channel in (meter)
 lc = 43;    % Length of contraction in (meter) from left
 sc = lc;    % Slope change at (lc) meter from left
 m = 1;      % m of trapesium cross-section
@@ -47,7 +47,7 @@ wall_check = false; % True for Wall Condition
 
                     % ---Assigning width value
 b1 = 10;            % Width b1
-b2 = 20;            % Width b2
+b2 = b1;            % Width b2
 b = zeros(1, imax); % Preset b array
 ic = lc/dx+1;       % Start at (ic), width is change
 for i = 1:imax
@@ -68,9 +68,9 @@ P = zeros(1, imax); % Wet Perimeter
 
 % Reasign p value (elevation of base channel) with to 0 x-axis
 chan_ev = zeros(1, imax);
-chan_up = -0.225;
-slope1 = -0.01;         % '-' mean ascending
-slope2 = 0.007;         % 
+chan_up = 0;
+slope1 = 0;         % '-' mean ascending
+slope2 = slope1;         % 
 chan_ev(1) = chan_up;   % start elevation
 is = sc/dx+1;           % 
 for i = 2:imax
@@ -90,6 +90,8 @@ Qp = Q;     % Predictor Variable (Only for predictor step), using p-endfix
 zp = z;
 Ap = A;
 hp = h;
+Rp = R;
+Pp = P;
 hex = h;    % For analytical solution
             % Position in meter
 pos_x = zeros(1, imax);
@@ -180,17 +182,17 @@ for t = 1:tmax
     % Start of Corrector Step ---
     for i = 2:imax-1
         % Continuity-Initial
-        A(i) = (b(i) + m*h(i))*h(i);
-        P(i) = b(i) + 2*h(i)*sqrt(1+m^2);
-        R(i) = A(i)/P(i);        
+        Ap(i) = (b(i) + m*hp(i))*hp(i);
+        Pp(i) = b(i) + 2*hp(i)*sqrt(1+m^2);
+        Rp(i) = Ap(i)/Pp(i);        
         % Continuity-Corrector
         Aph = (A(i) + Ap(i))/2;
         An(i) = Aph - dt/(2*dx) * (Qp(i)-Qp(i-1));        
         
         % Momentum-Initial
         I2c = beta * ((Qp(i)^2/Ap(i)) - (Qp(i-1)^2/Ap(i-1)))/dx;
-        I3c = g * A(i) * ((hp(i)+zp(i))-(hp(i-1)+zp(i-1)))/dx;
-        I4c = g * Q(i) * abs(Q(i)) * n^2 / (A(i)*R(i)^(4/3));  
+        I3c = g * Ap(i) * ((hp(i)+zp(i))-(hp(i-1)+zp(i-1)))/dx;
+        I4c = g * Qp(i) * abs(Qp(i)) * n^2 / (Ap(i)*Rp(i)^(4/3));  
         % Momentum-Corrector
         Qph = (Q(i)+Qp(i))/2;
         Qn(i) = Qph - dt/2 * (I2c + I3c + I4c);        
@@ -245,7 +247,7 @@ for t = 1:tmax
     
     
     % Analytic Solution ---
-    hm = 1.237805;
+    hm = 1.23;
     cm = sqrt(g * hm);
     xa = (imax - 1)/2 * dx - (t * dt) * sqrt(g*1.5);
     xb = (imax - 1)/2 * dx + (t * dt) * (2 * sqrt(g * 1.5) - 3 * cm);
@@ -269,8 +271,8 @@ for t = 1:tmax
         hold on
         p3 = plot(val_x,chan_ev, 'black');
         hold on
-%         p2 = plot(hex,'blue');
-%         hold on
+        p2 = plot(hex,'blue');
+        hold on
         
         %xticks(pos_x);
 
