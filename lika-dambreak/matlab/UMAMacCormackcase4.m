@@ -260,11 +260,3 @@ for t = 1:tmax
         
     end
 end
-
-%% FUNCTION: PROGRAM
-function h = tidalwave(t, T, A)
-% t = Time
-% T = Period
-% A = Amplitude
-h = sin(2*pi*t/T)*A;
-end
