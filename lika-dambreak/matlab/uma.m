@@ -2,6 +2,12 @@ function object = uma
     object.APR=@APR;
     object.secant=@secant;
     object.pasut=@tidalwave;
+    
+    object.tvdr=@tvdr;
+    object.tvdpsi=@tvdpsi;
+    object.tvdcourant=@tvdcourant;
+    object.tvdc=@tvdc;
+    object.tvdk=@tvdk;
 end
 
 function [A, P, R] = APR(b, m, y)
@@ -33,4 +39,41 @@ function h = tidalwave(t, T, A)
 % T = Period
 % A = Amplitude
 h = sin(2*pi*t/T)*A;
+end
+
+function r = tvdr(check, Ar, Qr)
+    A = Ar(2); Amin = Ar(1); Aplus = Ar(3);
+    Q = Qr(2); Qmin = Qr(1); Qplus = Qr(3);
+    
+    if check % True for rplus, False for rmin
+       r = ((A-Amin)*(Aplus-A)+(Q-Qmin)*(Qplus-Q))/((Aplus-A)*(Aplus-A)+(Qplus-Q)*(Qplus-Q));
+    else
+       r = ((A-Amin)*(Aplus-A)+(Q-Qmin)*(Qplus-Q))/((A-Amin)*(A-Amin)+(Q-Qmin)*(Q-Qmin));
+    end
+end
+
+function psi = tvdpsi(r)
+    if r > 0
+        psi = min([2*r,1]);
+    else
+        psi = 0;
+    end
+end
+
+function courant = tvdcourant(Q, A, B, dt, dx)
+    g = 9.81;
+    nu = abs(Q)/A + sqrt(g*A/B);
+    courant = nu*dt/dx;
+end
+
+function c = tvdc(courant)
+    if courant <= 0.5
+        c = courant*(1-courant);
+    else
+        c = 0.25;
+    end
+end
+
+function k = tvdk(r, c)
+    k = 0.5*c*(1-tvdpsi(r));
 end
