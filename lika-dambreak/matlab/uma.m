@@ -8,7 +8,10 @@ function object = uma
     object.tvdcourant=@tvdcourant;
     object.tvdc=@tvdc;
     object.tvdk=@tvdk;
+    object.tvdrarr=@tvdrarr;
 end
+
+
 
 function [A, P, R] = APR(b, m, y)
     A = (b + m*y)*y;
@@ -44,6 +47,17 @@ end
 function r = tvdr(check, Ar, Qr)
     A = Ar(2); Amin = Ar(1); Aplus = Ar(3);
     Q = Qr(2); Qmin = Qr(1); Qplus = Qr(3);
+    
+    if check % True for rplus, False for rmin
+       r = ((A-Amin)*(Aplus-A)+(Q-Qmin)*(Qplus-Q))/((Aplus-A)*(Aplus-A)+(Qplus-Q)*(Qplus-Q));
+    else
+       r = ((A-Amin)*(Aplus-A)+(Q-Qmin)*(Qplus-Q))/((A-Amin)*(A-Amin)+(Q-Qmin)*(Q-Qmin));
+    end
+end
+
+function r = tvdrarr(check, Ar, Qr, i)
+    A = Ar(i); Amin = Ar(i-1); Aplus = Ar(i+1);
+    Q = Qr(i); Qmin = Qr(i-1); Qplus = Qr(i+1);
     
     if check % True for rplus, False for rmin
        r = ((A-Amin)*(Aplus-A)+(Q-Qmin)*(Qplus-Q))/((Aplus-A)*(Aplus-A)+(Qplus-Q)*(Qplus-Q));
