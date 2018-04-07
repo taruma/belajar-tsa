@@ -11,7 +11,6 @@
 close all;  % Close all window
 clc;        % Clear command window
 clear;      % Remove items from workspace, freeing up system memory
-uma = uma;
 
 %% --- Define Variable and Constant
 g = 9.81;   % Gravity Acceleration
@@ -20,11 +19,11 @@ beta = 1;   % Correction
 
 %% --- Channel (Elevation and Properties)
 % --Water Elevation
-h1 = 5;     % Upstream head in (meter) elevation
-h2 = h1;    % Downstream head in (meter) elevation
+h1 = 1;     % Upstream head in (meter) elevation
+h2 = 1;    % Downstream head in (meter) elevation
 
 % --Channel Properties
-lf = 2000;  % Length of channel in (meter)
+lf = 2000;   % Length of channel in (meter)
 m = 1;      % m of trapesium cross-section
 
 %% --- Secant Method
@@ -34,23 +33,23 @@ yit = 10;   % Iteration
 
 %% --- Grid and Time
 dx = 100;   % Grid length
-dt = 10;   % Time step
+dt = 1000;   % Time step
 % -- Time
-time = 2000;         % Duration simulation in seconds
+time = 24*3600;         % Duration simulation in seconds
 tone = 1/dt;        % (tone) iteration for one second
-tout = tone*1;      % Plotting each 'tout' second(s)
+tout = 1;    % Plotting each 'tout' second(s)
 % Grid/Time Step
 imax = lf/dx+1; % Total grid
 tmax = time/dt; % Time Step (iteration)
 
 %% --- Tidal properties
-periode = 200;
+periode = 3600;
 ampli = 0.5;
 
 %% --- Width and Position
 % INPUT
 lc = 80;    % Length of contraction in (meter) from left
-b1 = 5;     % Width b1
+b1 = 1;     % Width b1
 b2 = b1;    % Width b2
 
 % -- Assigning width value
@@ -74,7 +73,7 @@ val_x = 1:imax;         % Absis value
 %% --- Channel and Datum Elevation
 % Input
 chan_up = 0.5;               % Channel elevation at grid 1 (left)
-slope1 = 0.5/2000;                 % '-' mean ascending
+slope1 = 0.5/lf;                 % '-' mean ascending
 slope2 = slope1;                 %
 sc = 0.9*lf;    % Slope change at (lc) meter from left
 
@@ -129,7 +128,9 @@ for i = 1:imax
     else
         h(i) = h2 - chan_ev(i);
     end
-    [A(i), P(i), R(i)] = uma.APR(b(i), m, h(i));
+    A(i) = (b(i) + m * h(i)) * h(i);
+    P(i) = b(i) + 2*h(i)*sqrt(1 + m.^2);
+    R(i) = A(i) / P(i);
 end
 % ---End
 
@@ -142,7 +143,9 @@ for t = 1:tmax
     % Start of Predictor Step----
     for i = 2:imax-1
         % Continuity-Initial
-        [A(i), P(i), R(i)] = uma.APR(b(i), m, h(i));
+        A(i) = (b(i) + m*h(i))*h(i);
+        P(i) = b(i) + 2*h(i)*sqrt(1+m^2);
+        R(i) = A(i)/P(i);
         % Continuity-Predictor
         Ap(i) = A(i) - dt/dx * (Q(i+1)-Q(i));
         % Momentum-Initial
@@ -159,26 +162,25 @@ for t = 1:tmax
     else
         Qp(1) = Qp(2);
     end
-    
     Qp(imax) = Qp(imax-1);
     Ap(1) = Ap(2);
-    hp(imax) = h2 + uma.pasut(tnow, periode, ampli);
+    hp(imax) = h2 + tidalwave(tnow, periode, ampli);
     hp(imax) = hp(imax) - chan_ev(imax);
     Ap(imax) = (b(imax) + m*hp(imax))*hp(imax);
     
     zp = z;
     % Find depth (h) value
     for i = 1:imax-1
-        hp(i) = uma.secant(yawal, dy, yit, [Ap(i) b(i) m]);
+        hp(i) = secantmet(yawal, dy, yit, [Ap(i) b(i) m]);
     end
     % ---End of Predictor Step
     
     % Start of Corrector Step ---
     for i = 2:imax-1
         % Continuity-Initial
-%         A(i) = (b(i) + m*h(i))*h(i);
-%         P(i) = b(i) + 2*h(i)*sqrt(1+m^2);
-%         R(i) = A(i)/P(i);
+        A(i) = (b(i) + m*h(i))*h(i);
+        P(i) = b(i) + 2*h(i)*sqrt(1+m^2);
+        R(i) = A(i)/P(i);
         % Continuity-Corrector
         Aph = (A(i) + Ap(i))/2;
         An(i) = Aph - dt/(2*dx) * (Qp(i)-Qp(i-1));
@@ -201,7 +203,7 @@ for t = 1:tmax
     
     Qn(imax) = Qn(imax-1);
     An(1) = An(2);
-    h(imax) = h2 + uma.pasut(tnow, periode, ampli);
+    h(imax) = h2 + tidalwave(tnow, periode, ampli);
     h(imax) = h(imax) - chan_ev(imax);
     An(imax) = (b(imax) + m*h(imax))*h(imax);
     % ---End of Corrector Step
@@ -212,7 +214,7 @@ for t = 1:tmax
     
     % Find depth with Current
     for i = 1:imax-1
-        h(i) = uma.secant(yawal, dy, yit, [A(i) b(i) m]);
+        h(i) = secantmet(yawal, dy, yit, [A(i) b(i) m]);
     end
     
     % --- End of Numerical Solution
@@ -240,7 +242,7 @@ for t = 1:tmax
         p3 = plot(val_x,chan_ev, 'black');
         hold on
         axis manual
-        axis ([1 imax lowest-0.1 highest+1]);
+        axis ([1 imax lowest-0.1 highest+0.1]);
         title('Tidal Wave MacCormack Method');
         %xlabel('Grid');
         ylabel('Elevasi(m)');
@@ -259,4 +261,48 @@ for t = 1:tmax
         hold off
         
     end
+end
+
+%% FUNCTION: PROGRAM
+function h = tidalwave(t, T, A)
+% t = Time
+% T = Period
+% A = Amplitude
+h = sin(2*pi*t/T)*A;
+end
+
+function y = secantmet(yawal, dy, yit, Abm)
+%        Example Code:
+%         yawal = 5;
+%         for j = 1:yit % 5 iterasi
+%             yplus = yawal + dy;
+%             ymin = yawal - dy;
+%
+%             Fawal = A(i) - b(i)*yawal - m * yawal^2;
+%             Fplus = A(i) - b(i)*yplus - m * yplus^2;
+%             Fmin = A(i) - b(i)*ymin - m * ymin^2;
+%
+%             dF = (Fplus - Fmin) / (2*dy);
+%
+%             yfinal = yawal - Fawal/dF;
+%             yawal = yfinal;
+%         end
+%        h(i) = yfinal;
+A = Abm(1);
+b = Abm(2);
+m = Abm(3);
+for i = 1:yit
+    yplus = yawal + dy;
+    ymin = yawal - dy;
+    
+    Fawal = A - b*yawal - m * yawal^2;
+    Fplus = A - b*yplus - m * yplus^2;
+    Fmin =  A - b*ymin  - m * ymin^2;
+    
+    dF = (Fplus - Fmin) / (2*dy);
+    
+    yfinal = yawal - Fawal/dF;
+    yawal = yfinal;
+end
+y = yfinal;
 end
