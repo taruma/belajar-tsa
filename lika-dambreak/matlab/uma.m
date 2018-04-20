@@ -76,7 +76,7 @@ end
 
 function courant = tvdcourant(Q, A, B, dt, dx)
     g = 9.81;
-    nu = abs(Q)/A + sqrt(g*A/B);
+    nu = Q/A + sqrt(g*A/B);
     courant = nu*dt/dx;
 end
 

@@ -15,7 +15,7 @@ uma = uma;
 
 %% --- Define Variable and Constant
 g = 9.81;   % Gravity Acceleration
-n = 0.03;      % Manning Slope
+n = 0;      % Manning Slope
 beta = 1;   % Correction
 
 %% --- Channel (Elevation and Properties)
@@ -73,10 +73,10 @@ val_x = 1:imax;         % Absis value
 
 %% --- Channel and Datum Elevation
 % Input
-chan_up = 0.5;               % Channel elevation at grid 1 (left)
-slope1 = 0.5/2000;                 % '-' mean ascending
-slope2 = slope1;                 %
-sc = 0.9*lf;    % Slope change at (lc) meter from left
+chan_up = 0.5;              % Channel elevation at grid 1 (left)
+slope1 = 0.5/2000;          % '-' mean ascending
+slope2 = slope1;            % 
+sc = 0.9*lf;                % Slope change at (lc) meter from left
 
 % Channel Elevation
 chan_ev = zeros(1, imax);   % Preset chan_ev
@@ -252,7 +252,7 @@ for t = 1:tmax
         hold on
         title(tnow);
         axis manual
-        axis ([1 imax -30 30]);
+        axis ([1 imax -100 100]);
         xlabel('Grid');
         ylabel('Q (m3/s)');
         pause(0.001)
