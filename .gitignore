@@ -2,4 +2,5 @@
 *.nc
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
-metnum/volume/__pycache__/metnum_uma.cpython-36.pyc
+*.pyc
+*/__pycache__/*
