@@ -5,12 +5,12 @@ _Repository_ ini berisikan berbagai _script_ atau _notebook (jupyter)_ yang saya
 
 ## Struktur Folder
 
-- **/docs** [General] - Dokumentasi atau halaman untuk http://taruma.github.io/belajar-tsa.
-- **/lika-dambreak** [Hidrolika] - Berisikan _script matlab_ untuk pemodelan dan simulasi _dambreak_. 
-- **/logi-gsmap** [Hidrologi] - Berisikan _notebook_ untuk memperoleh nilai curah hujan dari GSMAP.
-- **/metnum** [Metode Numerik dan Elemen Hingga] - Berisikan _notebook_ terkait Metode Numerik dan Elemen Hingga. Saat ini berisikan mengenai penyelesaian metode volume hingga (FVM).
-- **/playground-basemap** [play] - Berisikan _notebook_ latihan dalam menggunakan _library_ basemap.
-- **/playground-misc** [play] - Berisikan latihan macam-macam.
+- **[General]** `/docs` - Dokumentasi atau halaman untuk http://taruma.github.io/belajar-tsa.
+- **[Hidrolika]** `/lika-dambreak` - Berisikan _script matlab_ untuk pemodelan dan simulasi _dambreak_. 
+- **[Hidrologi]** `/logi-gsmap` - Berisikan _notebook_ untuk memperoleh nilai curah hujan dari GSMAP.
+- **[Metode Numerik dan Elemen Hingga]** `/metnum` - Berisikan _notebook_ terkait Metode Numerik dan Elemen Hingga. Saat ini berisikan mengenai penyelesaian metode volume hingga (FVM).
+- **[play]** `/playground-basemap` - Berisikan _notebook_ latihan dalam menggunakan _library_ basemap.
+- **[play]** `/playground-misc` - Berisikan latihan macam-macam.
 
 _Catatan:_ [play] menandakan bahwa isi folder tersebut merupakan coba-coba/latihan. 
 
