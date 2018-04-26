@@ -1,0 +1,841 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Tugas 3 - Taruma S. (25017046)}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \emph{Tugas 3 - Analisis Sumber Daya Air oleh Taruma S.M. (25017046)}
+
+\section{Tugas 3 - Analisis Sumber Daya
+Air}\label{tugas-3---analisis-sumber-daya-air}
+
+\begin{quote}
+Suatu saluran persegiempat mempunyai lebar \(2.5\ meter\) dan mempunyai
+kemiringan dasar saluran sama dengan \(1:400\). Jika konstanta Chezy
+adalah 30 dalam satuan SI, tentukan kedalaman normal jika debit aliran
+adalah \(0.80\ m^3/detik\). Tentukan solusi dengan menggunakan
+\textbf{Metoda Interval Halving, Newton Rhapson, dan Secant}.
+\end{quote}
+
+\begin{quote}
+Petunjuk:
+\(Q = AC\sqrt{RS},\ A=by_n, \text{dan}\ \large{y_{n1} = y_{n0}-\frac{f(y_{n0})}{f'(y_{n0})}}\),
+untuk harga awal \(y_{n0}\) ditentukan dengan asumsi kecepatan aliran
+\(v = 1 m/detik\).
+\end{quote}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{\PYZsh{} Ignore this block code.}
+        \PY{c+c1}{\PYZsh{} Define Function for printing result}
+        \PY{k}{def} \PY{n+nf}{cetak}\PY{p}{(}\PY{n}{name}\PY{p}{,} \PY{n}{val}\PY{p}{,} \PY{n}{unit} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{| }\PY{l+s+si}{\PYZob{}:\PYZgt{}15s\PYZcb{}}\PY{l+s+s1}{ = }\PY{l+s+si}{\PYZob{}:\PYZgt{}10.5f\PYZcb{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZlt{}}\PY{l+s+si}{\PYZob{}n\PYZcb{}}\PY{l+s+s1}{s\PYZcb{}|}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{name}\PY{p}{,} \PY{n}{val}\PY{p}{,} \PY{n}{unit}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{pad}\PY{o}{\PYZhy{}}\PY{l+m+mi}{15}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{o}{\PYZhy{}}\PY{l+m+mi}{7}\PY{p}{)}\PY{p}{)}
+            
+        \PY{k}{def} \PY{n+nf}{new\PYZus{}line}\PY{p}{(}\PY{n}{pad} \PY{o}{=} \PY{l+m+mi}{50}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{n}{pad}\PY{p}{)}
+            
+        \PY{n}{pad} \PY{o}{=} \PY{l+m+mi}{50}
+\end{Verbatim}
+
+
+    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsection{Penurunan dan Penentuan Nilai
+Awal}\label{penurunan-dan-penentuan-nilai-awal}
+
+\subsubsection{Fungsi dan Turunannya}\label{fungsi-dan-turunannya}
+
+Fungsi \(f(y)\) diperoleh dari:
+
+\[\begin{aligned} 
+Q &= A C \sqrt{R S} &\leftrightarrow 0 = A C \sqrt{R S} - Q \\
+f(y) &= A C \sqrt{R S} - Q = 0 & 
+\end{aligned}\]
+
+Turunan dari fungsi \(f(y)\):
+
+\[\begin{aligned}f(y) &= C b y \sqrt{\frac{b s y}{b + 2 y}} - Q \\
+f'(y) &= C b \sqrt{\frac{b s y}{b + 2 y}} + \frac{C}{s} \sqrt{\frac{b s y}{b + 2 y}} \left(b + 2 y\right) \left(- \frac{b s y}{\left(b + 2 y\right)^{2}} + \frac{b s}{2 \left(b + 2 y\right)}\right) \end{aligned}\]
+Disederhanakan, \(f'(y)\) menjadi:
+\[\begin{aligned} f'(y) &= \frac{C b \sqrt{\frac{b s y}{b + 2 y}}}{2 \left(b + 2 y\right)} \left(3 b + 4 y\right) \end{aligned}\]
+
+\begin{quote}
+Catatan : Hasil turunan diperoleh dari kode dibawah menggunakan
+\emph{sympy}.
+\end{quote}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{\PYZsh{} Mencari turunan fungsi menggunakan library sympy}
+        \PY{k+kn}{from} \PY{n+nn}{sympy} \PY{k}{import} \PY{n}{symbols}\PY{p}{,} \PY{n}{simplify}\PY{p}{,} \PY{n}{sqrt}\PY{p}{,} \PY{n}{latex}
+        
+        \PY{n}{sb}\PY{p}{,} \PY{n}{sy}\PY{p}{,} \PY{n}{sC}\PY{p}{,} \PY{n}{sS}\PY{p}{,} \PY{n}{sQ} \PY{o}{=} \PY{n}{symbols}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b, y, C, s, Q}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{sA} \PY{o}{=} \PY{n}{sb} \PY{o}{*} \PY{n}{sy}
+        \PY{n}{sP} \PY{o}{=} \PY{n}{sb} \PY{o}{+} \PY{l+m+mi}{2}\PY{o}{*} \PY{n}{sy}
+        \PY{n}{sR} \PY{o}{=} \PY{n}{sA}\PY{o}{/}\PY{n}{sP}
+        \PY{n}{sfy} \PY{o}{=} \PY{n}{sA}\PY{o}{*}\PY{n}{sC}\PY{o}{*}\PY{n}{sqrt}\PY{p}{(}\PY{n}{sR}\PY{o}{*}\PY{n}{sS}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{sQ}
+        
+        \PY{c+c1}{\PYZsh{} Mencari Turunan f(y)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Persamaan Q: }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{f(y)=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{sfy}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{==}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ In Latex:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{latex}\PY{p}{(}\PY{n}{sfy}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{sfy\PYZus{}d} \PY{o}{=} \PY{n}{sfy}\PY{o}{.}\PY{n}{diff}\PY{p}{(}\PY{n}{sy}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Turunan Persamaan Q terhadap y : }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{f}\PY{l+s+se}{\PYZbs{}\PYZsq{}}\PY{l+s+s1}{(y)=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{sfy\PYZus{}d}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{==}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ In Latex:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{latex}\PY{p}{(}\PY{n}{sfy\PYZus{}d}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Bentuk sederhana : }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{f}\PY{l+s+se}{\PYZbs{}\PYZsq{}}\PY{l+s+s1}{(y)=}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{simplify}\PY{p}{(}\PY{n}{sfy\PYZus{}d}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{==}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ In Latex:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{latex}\PY{p}{(}\PY{n}{simplify}\PY{p}{(}\PY{n}{sfy\PYZus{}d}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Mendefinisikan fungsi dalam python}
+        \PY{k}{def} \PY{n+nf}{f}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{:}
+            \PY{k}{return} \PY{n+nb}{float}\PY{p}{(}\PY{n}{sfy}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{sS}\PY{p}{:} \PY{n}{S}\PY{p}{,} \PY{n}{sC}\PY{p}{:} \PY{n}{C}\PY{p}{,} \PY{n}{sb}\PY{p}{:} \PY{n}{b}\PY{p}{,} \PY{n}{sy}\PY{p}{:} \PY{n}{y}\PY{p}{,} \PY{n}{sQ}\PY{p}{:} \PY{n}{Q}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{fd}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{:}
+            \PY{k}{return} \PY{n+nb}{float}\PY{p}{(}\PY{n}{sfy\PYZus{}d}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{sS}\PY{p}{:} \PY{n}{S}\PY{p}{,} \PY{n}{sC}\PY{p}{:} \PY{n}{C}\PY{p}{,} \PY{n}{sb}\PY{p}{:} \PY{n}{b}\PY{p}{,} \PY{n}{sy}\PY{p}{:} \PY{n}{y}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Persamaan Q: 
+	f(y)= C*b*y*sqrt(b*s*y/(b + 2*y)) - Q 
+==
+ In Latex: C b y \textbackslash{}sqrt\{\textbackslash{}frac\{b s y\}\{b + 2 y\}\} - Q 
+
+Turunan Persamaan Q terhadap y : 
+	f'(y)= C*b*sqrt(b*s*y/(b + 2*y)) + C*sqrt(b*s*y/(b + 2*y))*(b + 2*y)*(-b*s*y/(b + 2*y)**2 + b*s/(2*(b + 2*y)))/s 
+==
+ In Latex: C b \textbackslash{}sqrt\{\textbackslash{}frac\{b s y\}\{b + 2 y\}\} + \textbackslash{}frac\{C\}\{s\} \textbackslash{}sqrt\{\textbackslash{}frac\{b s y\}\{b + 2 y\}\} \textbackslash{}left(b + 2 y\textbackslash{}right) \textbackslash{}left(- \textbackslash{}frac\{b s y\}\{\textbackslash{}left(b + 2 y\textbackslash{}right)\^{}\{2\}\} + \textbackslash{}frac\{b s\}\{2 \textbackslash{}left(b + 2 y\textbackslash{}right)\}\textbackslash{}right) 
+
+Bentuk sederhana : 
+	f'(y)= C*b*sqrt(b*s*y/(b + 2*y))*(3*b + 4*y)/(2*(b + 2*y)) 
+==
+ In Latex: \textbackslash{}frac\{C b \textbackslash{}sqrt\{\textbackslash{}frac\{b s y\}\{b + 2 y\}\}\}\{2 \textbackslash{}left(b + 2 y\textbackslash{}right)\} \textbackslash{}left(3 b + 4 y\textbackslash{}right) 
+
+
+    \end{Verbatim}
+
+    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{\texorpdfstring{Menentukan nilai awal \(y_{n0}\) dan
+\(y_{n1}\)}{Menentukan nilai awal y\_\{n0\} dan y\_\{n1\}}}\label{menentukan-nilai-awal-y_n0-dan-y_n1}
+
+\paragraph{\texorpdfstring{Nilai
+\(y_{n0}\)}{Nilai y\_\{n0\}}}\label{nilai-y_n0}
+
+Dengan mengasumsikan kecepatan aliran \(v = 1\ m/det\), \(y_{n0}\) dapat
+dicari dari persamaan \(Q = VA\):
+
+\[Q = VA \leftrightarrow Q = V\ (by_{n0})\]
+
+Dimasukkan nilai \(V = 1\ m/det\), \(b = 2.5\ m\) dan
+\(Q = 0.8\ m^3/det\), maka diperoleh nilai \(y_{n0}\) sebesar:
+
+\[\begin{aligned} V = 1\ m/det, b = 2.5\ m, Q = 0.8\ m^3/det &\rightarrow& Q &= V\ (b\ y_{n0}) \\
+&& 0.8 &= 1\ (2.5\ y_{n0}) \\
+&& y_{n0} &= \frac{0.8}{2.5} = 0.32\ m
+\end{aligned}\]
+
+\paragraph{\texorpdfstring{Nilai
+\(y_{n1}\)}{Nilai y\_\{n1\}}}\label{nilai-y_n1}
+
+Nilai \(y_{n1}\) diperoleh dari persamaan yang diberikan di petunjuk
+yaitu \(y_{n1} = y_{n0}-\frac{f(y_{n0})}{f'(y_{n0})}\):
+
+\[\begin{aligned} y_{n0} = 0.32\ m, f(y_{n0}) = -0.1942946, f'(y_{n0}) = 2.646344 &\rightarrow& y_{n1} &= y_{n0}-\frac{f(y_{n0})}{f'(y_{n0})} \\
+&& y_{n1} &= 0.32 - \frac{-0.1942946}{2.646344} \\
+&& y_{n1} &= 0.39342\ m
+\end{aligned}\]
+
+\subsubsection{\texorpdfstring{Nilai \(y_{n0}\) dan
+\(y_{n1}\)}{Nilai y\_\{n0\} dan y\_\{n1\}}}\label{nilai-y_n0-dan-y_n1}
+
+Disimpulkan bahwa nilai \(y_{n0} = 0.32\ m\) dan
+\(y_{n1} = 0.39342\ m\). Dengan catatan: - Untuk Metoda Interval
+Halving, nilai batas kiri: \(x_a = y_{n0}\) dan batas kanan:
+\(x_b = y_{n1}\). - Untuk Metoda Newton-Rhapson, nilai awal:
+\(x_k = y_{n1}\). - Untuk Metoda Secant, nilai \(x_n = y_{n1}\) dan
+\(x_{n-1} = y_{n0}\).
+
+Catatan: Hasil diatas diperoleh dari perhitungan melalui python dibawah
+ini.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{\PYZsh{} Diketahui:}
+        \PY{n}{b} \PY{o}{=} \PY{l+m+mf}{2.5} \PY{c+c1}{\PYZsh{} (m) \PYZhy{} Lebar Saluran}
+        \PY{n}{S} \PY{o}{=} \PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{400} \PY{c+c1}{\PYZsh{} (m/m) \PYZhy{} Kemiringan dasar Saluran}
+        \PY{n}{C} \PY{o}{=} \PY{l+m+mi}{30} \PY{c+c1}{\PYZsh{} (..) \PYZhy{} Chezy}
+        \PY{n}{Q} \PY{o}{=} \PY{l+m+mf}{0.80} \PY{c+c1}{\PYZsh{} (m3/det) \PYZhy{} Debit Aliran}
+        
+        \PY{c+c1}{\PYZsh{} Asumsikan}
+        \PY{n}{V} \PY{o}{=} \PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{} (m3/det)}
+        
+        \PY{n}{new\PYZus{}line}\PY{p}{(}\PY{n}{pad}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{|}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n\PYZcb{}}\PY{l+s+s1}{s\PYZcb{}|}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Diketahui}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{n}{pad}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+        \PY{n}{new\PYZus{}line}\PY{p}{(}\PY{n}{pad}\PY{p}{)}
+        \PY{n}{cetak}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{cetak}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{S}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{S}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{m/m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{cetak}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{C}\PY{p}{)}
+        \PY{n}{cetak}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Q}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{Q}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{m\PYZca{}3/det}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{new\PYZus{}line}\PY{p}{(}\PY{n}{pad}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Menentukan harga awal}
+        \PY{c+c1}{\PYZsh{} Q = V.A \PYZhy{}\PYZgt{} Q = V.b.y \PYZhy{}\PYZgt{} y = Q/(V.b)}
+        \PY{n}{yn0} \PY{o}{=} \PY{n}{Q}\PY{o}{/}\PY{p}{(}\PY{n}{V}\PY{o}{*}\PY{n}{b}\PY{p}{)}
+        \PY{n}{fy}\PY{p}{,} \PY{n}{fdy} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{n}{yn0}\PY{p}{)}\PY{p}{,} \PY{n}{fd}\PY{p}{(}\PY{n}{yn0}\PY{p}{)}
+        \PY{n}{yn1} \PY{o}{=} \PY{n}{yn0} \PY{o}{\PYZhy{}} \PY{n}{fy}\PY{o}{/}\PY{n}{fdy}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{p}{)}
+        \PY{n}{new\PYZus{}line}\PY{p}{(}\PY{n}{pad}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{|}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n\PYZcb{}}\PY{l+s+s1}{s\PYZcb{}|}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mencari nilai y\PYZus{}}\PY{l+s+si}{\PYZob{}n0\PYZcb{}}\PY{l+s+s1}{ dan y\PYZus{}}\PY{l+s+si}{\PYZob{}n1\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{n}{pad}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+        \PY{n}{new\PYZus{}line}\PY{p}{(}\PY{n}{pad}\PY{p}{)}
+        \PY{n}{cetak}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y\PYZus{}}\PY{l+s+si}{\PYZob{}n0\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{yn0}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{cetak}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f(y\PYZus{}}\PY{l+s+si}{\PYZob{}n0\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{fy}\PY{p}{)}
+        \PY{n}{cetak}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f}\PY{l+s+se}{\PYZbs{}\PYZsq{}}\PY{l+s+s1}{(y\PYZus{}}\PY{l+s+si}{\PYZob{}n0\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{fdy}\PY{p}{)}
+        \PY{n}{cetak}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y\PYZus{}}\PY{l+s+si}{\PYZob{}n1\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{yn1}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{new\PYZus{}line}\PY{p}{(}\PY{n}{pad}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+==================================================
+|                   Diketahui                    |
+==================================================
+|               b =    2.50000 m                 |
+|               S =    0.00250 m/m               |
+|               C =   30.00000                   |
+|               Q =    0.80000 m\^{}3/det           |
+==================================================
+
+==================================================
+|        Mencari nilai y\_\{n0\} dan y\_\{n1\}         |
+==================================================
+|          y\_\{n0\} =    0.32000 m                 |
+|       f(y\_\{n0\}) =   -0.19429                   |
+|      f'(y\_\{n0\}) =    2.64634                   |
+|          y\_\{n1\} =    0.39342 m                 |
+==================================================
+
+    \end{Verbatim}
+
+    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsection{Penyelesaian Numerik (Interval Halving, Newton,
+Secant)}\label{penyelesaian-numerik-interval-halving-newton-secant}
+
+Kode diperoleh dari Latihan Soal Notebook
+\href{https://github.com/taruma/belajar-tsa/blob/master/ansis/Interval-Halving\%2C\%20Newton-Rhapson\%2C\%20Secant\%20(Minggu\%2015).ipynb}{Interval-Halving,
+Newton-Rhapson, Secant (Minggu 15)} atau dapat dilihat dengan nbviewer
+\href{https://nbviewer.jupyter.org/github/taruma/belajar-tsa/blob/master/ansis/Interval-Halving\%2C\%20Newton-Rhapson\%2C\%20Secant\%20\%28Minggu\%2015\%29.ipynb}{Interval-Halving,
+Newton-Rhapson, Secant (Minggu 15)}. Dan dimodifikasi sesuai kebutuhan.
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{Metode Interval Halving}\label{metode-interval-halving}
+
+\paragraph{Langkah Pengerjaan}\label{langkah-pengerjaan}
+
+Solusi menggunakan metode \emph{Interval Halving} dengan langkah sebagai
+berikut: - Nilai batas kiri dan kanan yang digunakan diperoleh dari
+perhitungan sebelumnya untuk mendapatkan nilai \(y_{n0}\) dan
+\(y_{n1}\).
+
+\[\begin{aligned} &\text{Batas bawah/kiri: }& x_a &= y_{n0} &\text{Batas atas/kanan: }& x_b &=&\ y_{n1} \\
+&& x_a &= 0.32\ m && x_b &=&\ 0.39342\ m \end{aligned}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Periksa nilai \(f(x_a)\) dan \(f(x_b)\) lebih kecil dari \(0\).
+  Langkah ini memastikan bahwa akar persamaannya berada di antara
+  \(x_a\) dan \(x_b\). Dan diperoleh bahwa nilai akar-akarnya berada di
+  antara \(x_a\) dan \(x_b\)
+\end{itemize}
+
+\[\begin{aligned} f(x_a) &=\ -0.19429 ; f(x_b) &=\ 0.00704 \\
+f(x_a)f(x_b) &< 0 &\rightarrow \text{OK} \end{aligned}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Cari nilai tengah \((x_h)\) yang merupakan titik tengah dari \(x_a\)
+  dan \(x_b\):
+\end{itemize}
+
+\[x_h = \frac{x_a + x_b}{2}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Tentukan batas atas/bawah berikutnya. Nilai \(x_h\) sebagai batas atas
+  ketika \(f(x_a)f(x_h)<0\) dan sebaliknya menjadi batas bawah ketika
+  \(f(x_b)f(x_h)<0\).
+\end{itemize}
+
+\[\begin{aligned} x_b \leftarrow x_h &: \text{if } f(x_a)f(x_h)<0 \text{ TRUE} \\
+x_a \leftarrow x_h &: \text{if } f(x_h)f(x_b)<0 \text{ TRUE}
+\end{aligned}\]
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{x1}\PY{p}{,} \PY{n}{x2} \PY{o}{=} \PY{n}{yn0}\PY{p}{,} \PY{n}{yn1}
+        \PY{n}{iterasi} \PY{o}{=} \PY{l+m+mi}{20}
+        \PY{n}{xa}\PY{p}{,} \PY{n}{xb} \PY{o}{=} \PY{n}{x1}\PY{p}{,} \PY{n}{x2}
+        
+        \PY{n}{pad} \PY{o}{=} \PY{l+m+mi}{70}
+        \PY{n}{new\PYZus{}line}\PY{p}{(}\PY{n}{pad}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Periksa nilai akarnya berada diantara xa dan xb}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{if} \PY{n}{f}\PY{p}{(}\PY{n}{xa}\PY{p}{)}\PY{o}{*}\PY{n}{f}\PY{p}{(}\PY{n}{xb}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f(x\PYZus{}a) x f(x\PYZus{}b) \PYZlt{} 0 === OK }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{dengan nilai f(x\PYZus{}a) = }\PY{l+s+si}{\PYZob{}fxa:12.5f\PYZcb{}}\PY{l+s+s1}{ dan f(x\PYZus{}b) = }\PY{l+s+si}{\PYZob{}fxb:12.5f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+                \PY{n}{fxa}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{n}{xa}\PY{p}{)}\PY{p}{,} \PY{n}{fxb}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{n}{xb}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f(x\PYZus{}a) x f(x\PYZus{}b) \PYZlt{} 0 === NOT OK }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{tidak akan ditemukan akarnya diantara }\PY{l+s+si}{\PYZob{}xa\PYZcb{}}\PY{l+s+s1}{ dan }\PY{l+s+si}{\PYZob{}xb\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{dengan nilai f(x\PYZus{}a) = }\PY{l+s+si}{\PYZob{}fxa\PYZcb{}}\PY{l+s+s1}{ dan f(x\PYZus{}b) = }\PY{l+s+si}{\PYZob{}fxb\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+                \PY{n}{xa}\PY{o}{=}\PY{n}{xa}\PY{p}{,} \PY{n}{xb}\PY{o}{=}\PY{n}{xb}\PY{p}{,} \PY{n}{fxa}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{n}{xa}\PY{p}{)}\PY{p}{,} \PY{n}{fxb}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{n}{xb}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{new\PYZus{}line}\PY{p}{(}\PY{n}{pad}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{n}{lebar\PYZus{}text} \PY{o}{=} \PY{l+m+mi}{12}\PY{o}{*}\PY{l+m+mi}{7} \PY{o}{+} \PY{l+m+mi}{8}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{n}{lebar\PYZus{}text}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{|}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{}|}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Solusi Numerik Metoda Interval Halving}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{n}{lebar\PYZus{}text}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{n}{lebar\PYZus{}text}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{| }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} |}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZus{}a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZus{}b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f(x\PYZus{}a)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f(x\PYZus{}b)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZus{}h}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f(x\PYZus{}h)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{n}{lebar\PYZus{}text}\PY{p}{)}
+        
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{iterasi}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{n}{fxa}\PY{p}{,} \PY{n}{fxb} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{n}{xa}\PY{p}{)}\PY{p}{,} \PY{n}{f}\PY{p}{(}\PY{n}{xb}\PY{p}{)}
+            \PY{n}{xh} \PY{o}{=} \PY{p}{(}\PY{n}{xa}\PY{o}{+}\PY{n}{xb}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}
+            \PY{n}{fxh} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{n}{xh}\PY{p}{)}
+        
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{| }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{d\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{} }\PY{l+s+si}{\PYZob{}f1:d\PYZcb{}}\PY{l+s+s1}{.}\PY{l+s+si}{\PYZob{}f2:d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{} }\PY{l+s+si}{\PYZob{}f1:d\PYZcb{}}\PY{l+s+s1}{.}\PY{l+s+si}{\PYZob{}f2:d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{} }\PY{l+s+si}{\PYZob{}f1:d\PYZcb{}}\PY{l+s+s1}{.}\PY{l+s+si}{\PYZob{}f2:d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{} }\PY{l+s+si}{\PYZob{}f1:d\PYZcb{}}\PY{l+s+s1}{.}\PY{l+s+si}{\PYZob{}f2:d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{} }\PY{l+s+si}{\PYZob{}f1:d\PYZcb{}}\PY{l+s+s1}{.}\PY{l+s+si}{\PYZob{}f2:d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{} }\PY{l+s+si}{\PYZob{}f1:d\PYZcb{}}\PY{l+s+s1}{.}\PY{l+s+si}{\PYZob{}f2:d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{} |}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+                \PY{n}{i}\PY{p}{,} \PY{n}{xa}\PY{p}{,} \PY{n}{xb}\PY{p}{,} \PY{n}{f}\PY{p}{(}\PY{n}{xa}\PY{p}{)}\PY{p}{,} \PY{n}{f}\PY{p}{(}\PY{n}{xb}\PY{p}{)}\PY{p}{,} \PY{n}{xh}\PY{p}{,} \PY{n}{f}\PY{p}{(}\PY{n}{xh}\PY{p}{)}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{f1}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{f2}\PY{o}{=}\PY{l+m+mi}{7}\PY{p}{)}\PY{p}{)}
+            \PY{k}{if} \PY{n}{fxa}\PY{o}{*}\PY{n}{fxh} \PY{o}{\PYZlt{}} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{xb} \PY{o}{=} \PY{n}{xh}
+            \PY{k}{elif} \PY{n}{fxb}\PY{o}{*}\PY{n}{fxh} \PY{o}{\PYZlt{}} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{xa} \PY{o}{=} \PY{n}{xh}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{n}{lebar\PYZus{}text}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Maka diperoleh nilai akar\PYZhy{}akarnya = }\PY{l+s+si}{\PYZob{}:10.6f\PYZcb{}}\PY{l+s+s1}{ dengan hasil f(x\PYZus{}h) = }\PY{l+s+si}{\PYZob{}:15.10f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{xh}\PY{p}{,} \PY{n}{f}\PY{p}{(}\PY{n}{xh}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+======================================================================
+Periksa nilai akarnya berada diantara xa dan xb
+f(x\_a) x f(x\_b) < 0 === OK 
+	dengan nilai f(x\_a) =     -0.19429 dan f(x\_b) =      0.00704
+======================================================================
+
+
+============================================================================================
+|                          Solusi Numerik Metoda Interval Halving                          |
+============================================================================================
+|     n      |    x\_a     |    x\_b     |   f(x\_a)   |   f(x\_b)   |    x\_h     |   f(x\_h)   |
+============================================================================================
+|     1      |  0.3200000 |  0.3934200 | -0.1942946 |  0.0070430 |  0.3567100 | -0.0953224 |
+|     2      |  0.3567100 |  0.3934200 | -0.0953224 |  0.0070430 |  0.3750650 | -0.0445413 |
+|     3      |  0.3750650 |  0.3934200 | -0.0445413 |  0.0070430 |  0.3842425 | -0.0188469 |
+|     4      |  0.3842425 |  0.3934200 | -0.0188469 |  0.0070430 |  0.3888313 | -0.0059261 |
+|     5      |  0.3888313 |  0.3934200 | -0.0059261 |  0.0070430 |  0.3911256 |  0.0005525 |
+|     6      |  0.3888313 |  0.3911256 | -0.0059261 |  0.0005525 |  0.3899785 | -0.0026883 |
+|     7      |  0.3899785 |  0.3911256 | -0.0026883 |  0.0005525 |  0.3905521 | -0.0010683 |
+|     8      |  0.3905521 |  0.3911256 | -0.0010683 |  0.0005525 |  0.3908389 | -0.0002580 |
+|     9      |  0.3908389 |  0.3911256 | -0.0002580 |  0.0005525 |  0.3909822 |  0.0001472 |
+|     10     |  0.3908389 |  0.3909822 | -0.0002580 |  0.0001472 |  0.3909105 | -0.0000554 |
+|     11     |  0.3909105 |  0.3909822 | -0.0000554 |  0.0001472 |  0.3909464 |  0.0000459 |
+|     12     |  0.3909105 |  0.3909464 | -0.0000554 |  0.0000459 |  0.3909285 | -0.0000048 |
+|     13     |  0.3909285 |  0.3909464 | -0.0000048 |  0.0000459 |  0.3909374 |  0.0000206 |
+|     14     |  0.3909285 |  0.3909374 | -0.0000048 |  0.0000206 |  0.3909330 |  0.0000079 |
+|     15     |  0.3909285 |  0.3909330 | -0.0000048 |  0.0000079 |  0.3909307 |  0.0000016 |
+|     16     |  0.3909285 |  0.3909307 | -0.0000048 |  0.0000016 |  0.3909296 | -0.0000016 |
+|     17     |  0.3909296 |  0.3909307 | -0.0000016 |  0.0000016 |  0.3909302 | -0.0000000 |
+|     18     |  0.3909302 |  0.3909307 | -0.0000000 |  0.0000016 |  0.3909304 |  0.0000008 |
+|     19     |  0.3909302 |  0.3909304 | -0.0000000 |  0.0000008 |  0.3909303 |  0.0000004 |
+|     20     |  0.3909302 |  0.3909303 | -0.0000000 |  0.0000004 |  0.3909302 |  0.0000002 |
+============================================================================================
+Maka diperoleh nilai akar-akarnya =   0.390930 dengan hasil f(x\_h) =    0.0000001907
+
+    \end{Verbatim}
+
+    \paragraph{Solusi Numerik Metoda Interval
+Halving}\label{solusi-numerik-metoda-interval-halving}
+
+Dengan menggunakan prosedur diatas dan dilakukan iterasi sebanyak \(20\)
+kali, diperoleh bahwa nilai \(y_n = 0.390930\ m\) dengan nilai
+\(f(x_h) = 0.0000001907\). Dari tabel hasil perhitungan dibawah, dapat
+dilihat bahwa nilai akarnya sudah dapat ditemukan pada langkah ke \(16\)
+jika error yang ditargetkan \(\epsilon = 0.000001\).
+
+    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{Metoda Newton-Rhapson}\label{metoda-newton-rhapson}
+
+\paragraph{Langkah Pengerjaan}\label{langkah-pengerjaan}
+
+Solusi Numerik menggunakan metoda \emph{Newton-Rhapson} dimulai dari:
+
+\begin{itemize}
+\item
+  Nilai awal \(x_k\) menggunakan nilai \(y_{n0}\) maka \(x_k = 0.32\ m\)
+\item
+  Dalam metoda Newton-Rhapson diperlukan turunan dari fungsi \(f(y)\).
+  Persamaan yang digunakan:
+\end{itemize}
+
+\[\begin{aligned} f(y) &=& C b y \sqrt{\frac{b s y}{b + 2 y}} - Q \\
+f'(y) &=& \frac{C b \sqrt{\frac{b s y}{b + 2 y}}}{2 \left(b + 2 y\right)} \left(3 b + 4 y\right) 
+\end{aligned}\]
+
+dengan: \(C = 30, b = 2.5\ m, s = \frac{1}{400}\ m/m\)
+
+\begin{itemize}
+\tightlist
+\item
+  Akar persamaan \(x_{k+1}\) diperoleh dengan melakukan iterasi sebanyak
+  \(k\) dengan menggunakan persamaan:
+\end{itemize}
+
+\[x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)}\]
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{\PYZsh{} Defining function}
+        
+        \PY{n}{iterasi} \PY{o}{=} \PY{l+m+mi}{10}  \PY{c+c1}{\PYZsh{} Iteration}
+        \PY{n}{xk} \PY{o}{=} \PY{n}{yn0}  \PY{c+c1}{\PYZsh{} x\PYZus{}k}
+        
+        \PY{n}{lebar\PYZus{}text} \PY{o}{=} \PY{l+m+mi}{12}\PY{o}{*}\PY{l+m+mi}{5} \PY{o}{+} \PY{l+m+mi}{6}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{n}{lebar\PYZus{}text}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{|}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{}|}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Solusi Numerik Metoda Newton Rhapson}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{n}{lebar\PYZus{}text}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{n}{lebar\PYZus{}text}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{| }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{} |}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZus{}k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f(x\PYZus{}k)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f}\PY{l+s+se}{\PYZbs{}\PYZsq{}}\PY{l+s+s1}{(x\PYZus{}k)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZus{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{k+1\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{n}{lebar\PYZus{}text}\PY{p}{)}
+        
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{iterasi}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{n}{xk\PYZus{}p1} \PY{o}{=} \PY{n}{xk} \PY{o}{\PYZhy{}} \PY{n}{f}\PY{p}{(}\PY{n}{xk}\PY{p}{)}\PY{o}{/}\PY{n}{fd}\PY{p}{(}\PY{n}{xk}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{| }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{d\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{} }\PY{l+s+si}{\PYZob{}f1:d\PYZcb{}}\PY{l+s+s1}{.}\PY{l+s+si}{\PYZob{}f2:d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{} }\PY{l+s+si}{\PYZob{}f1:d\PYZcb{}}\PY{l+s+s1}{.}\PY{l+s+si}{\PYZob{}f2:d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{} }\PY{l+s+si}{\PYZob{}f1:d\PYZcb{}}\PY{l+s+s1}{.}\PY{l+s+si}{\PYZob{}f2:d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{} | }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{} }\PY{l+s+si}{\PYZob{}f1:d\PYZcb{}}\PY{l+s+s1}{.}\PY{l+s+si}{\PYZob{}f2:d\PYZcb{}}\PY{l+s+s1}{f\PYZcb{} | }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{p}{,}
+                                                                                                                                   \PY{n}{xk}\PY{p}{,} \PY{n}{f}\PY{p}{(}\PY{n}{xk}\PY{p}{)}\PY{p}{,} \PY{n}{fd}\PY{p}{(}\PY{n}{xk}\PY{p}{)}\PY{p}{,} \PY{n}{xk\PYZus{}p1}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{f1}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{f2}\PY{o}{=}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+            \PY{n}{xk} \PY{o}{=} \PY{n}{xk\PYZus{}p1}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{n}{lebar\PYZus{}text}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Maka diperoleh nilai akar\PYZhy{}akarnya = }\PY{l+s+si}{\PYZob{}:10.6f\PYZcb{}}\PY{l+s+s1}{ dengan hasil f(x\PYZus{}k) = }\PY{l+s+si}{\PYZob{}:15.10f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{xk}\PY{p}{,} \PY{n}{f}\PY{p}{(}\PY{n}{xk}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+==================================================================
+|              Solusi Numerik Metoda Newton Rhapson              |
+==================================================================
+|     k      |    x\_k     |   f(x\_k)   |  f'(x\_k)   |  x\_\{k+1\}   |
+==================================================================
+|     1      |  0.320000  | -0.194295  |  2.646344  |  0.393420  | 
+|     2      |  0.393420  |  0.007043  |  2.831491  |  0.390933  | 
+|     3      |  0.390933  |  0.000007  |  2.825843  |  0.390930  | 
+|     4      |  0.390930  |  0.000000  |  2.825838  |  0.390930  | 
+|     5      |  0.390930  |  0.000000  |  2.825838  |  0.390930  | 
+|     6      |  0.390930  |  0.000000  |  2.825838  |  0.390930  | 
+|     7      |  0.390930  |  0.000000  |  2.825838  |  0.390930  | 
+|     8      |  0.390930  |  0.000000  |  2.825838  |  0.390930  | 
+|     9      |  0.390930  |  0.000000  |  2.825838  |  0.390930  | 
+|     10     |  0.390930  |  0.000000  |  2.825838  |  0.390930  | 
+==================================================================
+Maka diperoleh nilai akar-akarnya =   0.390930 dengan hasil f(x\_k) =    0.0000000000
+
+    \end{Verbatim}
+
+    \paragraph{Solusi Numerik Metoda Newton
+Rhapson}\label{solusi-numerik-metoda-newton-rhapson}
+
+Dengan menggunakan prosedur diatas dan dilakukan iterasi sebanyak \(10\)
+kali, diperoleh bahwa nilai \(y_n = 0.390930\ m\) dengan nilai
+\(f(x_k) = 0.0000000000\). Dari tabel hasil perhitungan diatas, dapat
+dilihat bahwa nilai akarnya sudah dapat ditemukan pada langkah ke \(4\)
+jika error yang ditargetkan \(\epsilon = 0.000001\).
+
+    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsubsection{Metoda Secant}\label{metoda-secant}
+
+\paragraph{Langkah Pengerjaan}\label{langkah-pengerjaan}
+
+Solusi Numerik menggunakan metoda \emph{Secant} dimulai dari:
+
+\begin{itemize}
+\item
+  Menentukan nilai \(x_0 = x_{n-1}\) dan \(x_1 = x_n\) dari nilai
+  \(y_{n0}\) dan \(y_{n1}\):
+  \[\begin{aligned}x_0 &= x_{n-1} &= y_{n0} &= 0.32\ m \\
+  x_1 &= x_{n} &= y_{n1} &= 0.39342\ m\end{aligned}\]
+\item
+  Dalam metoda \emph{Secant} hanya diperlukan fungsi \(f(y)\). Persamaan
+  yang digunakan:
+\end{itemize}
+
+\[\begin{aligned} f(y) &=& C b y \sqrt{\frac{b s y}{b + 2 y}} - Q \\
+\end{aligned}\]
+
+dengan: \(C = 30, b = 2.5\ m, s = \frac{1}{400}\ m/m\)
+
+\begin{itemize}
+\tightlist
+\item
+  Akar persamaan \(x_{n+1}\) diperoleh dengan melakukan iterasi sebanyak
+  \(n\) dengan menggunakan persamaan:
+\end{itemize}
+
+\[x_{n+1} = x_n - f(x_n)\frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}\]
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{x0}\PY{p}{,} \PY{n}{x1} \PY{o}{=} \PY{n}{yn1}\PY{p}{,} \PY{n}{yn0}
+        
+        \PY{n}{lebar\PYZus{}text} \PY{o}{=} \PY{l+m+mi}{10}\PY{o}{*}\PY{l+m+mi}{5}\PY{o}{+}\PY{l+m+mi}{12}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{l+m+mi}{6}\PY{o}{+}\PY{l+m+mi}{7}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{n}{lebar\PYZus{}text}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{|}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{:\PYZca{}}\PY{l+s+si}{\PYZob{}n:d\PYZcb{}}\PY{l+s+s1}{s\PYZcb{}|}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Solusi Numerik Menggunakan Metoda Secant}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{n}\PY{o}{=}\PY{n}{lebar\PYZus{}text}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{l+m+mi}{5}\PY{o}{+}\PY{l+m+mi}{12}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{l+m+mi}{6}\PY{o}{+}\PY{l+m+mi}{7}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{| }\PY{l+s+si}{\PYZob{}:\PYZca{}10s\PYZcb{}}\PY{l+s+s1}{ | }\PY{l+s+si}{\PYZob{}:\PYZca{}10s\PYZcb{}}\PY{l+s+s1}{ | }\PY{l+s+si}{\PYZob{}:\PYZca{}10s\PYZcb{}}\PY{l+s+s1}{ | }\PY{l+s+si}{\PYZob{}:\PYZca{}10s\PYZcb{}}\PY{l+s+s1}{ | }\PY{l+s+si}{\PYZob{}:\PYZca{}10s\PYZcb{}}\PY{l+s+s1}{ | }\PY{l+s+si}{\PYZob{}:\PYZca{}12s\PYZcb{}}\PY{l+s+s1}{ |}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZus{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{n\PYZhy{}1\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZus{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{N\PYZus{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{D\PYZus{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x\PYZus{}}\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{n+1\PYZcb{}\PYZhy{}x\PYZus{}n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{l+m+mi}{5}\PY{o}{+}\PY{l+m+mi}{12}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{l+m+mi}{6}\PY{o}{+}\PY{l+m+mi}{7}\PY{p}{)}\PY{p}{)}
+        
+        \PY{n}{iterasi} \PY{o}{=} \PY{l+m+mi}{6}
+        
+        \PY{n}{xn} \PY{o}{=} \PY{n}{x1}
+        \PY{n}{xn\PYZus{}m1} \PY{o}{=} \PY{n}{x0}
+        \PY{n}{xn\PYZus{}p1} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{iterasi}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{n}{Nn} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{n}{xn}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{xn}\PY{o}{\PYZhy{}}\PY{n}{xn\PYZus{}m1}\PY{p}{)}
+            \PY{n}{Dn} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{n}{xn}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{f}\PY{p}{(}\PY{n}{xn\PYZus{}m1}\PY{p}{)}
+            \PY{n}{xn\PYZus{}p1} \PY{o}{=} \PY{n}{xn} \PY{o}{\PYZhy{}} \PY{n}{Nn} \PY{o}{/} \PY{n}{Dn}
+            \PY{n}{dx} \PY{o}{=} \PY{n}{xn\PYZus{}p1}\PY{o}{\PYZhy{}}\PY{n}{xn}
+        
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{| }\PY{l+s+si}{\PYZob{}:\PYZca{}10d\PYZcb{}}\PY{l+s+s1}{ | }\PY{l+s+si}{\PYZob{}:\PYZca{} 10.6f\PYZcb{}}\PY{l+s+s1}{ | }\PY{l+s+si}{\PYZob{}:\PYZca{} 10.6f\PYZcb{}}\PY{l+s+s1}{ | }\PY{l+s+si}{\PYZob{}:\PYZca{} 10.6f\PYZcb{}}\PY{l+s+s1}{ | }\PY{l+s+si}{\PYZob{}:\PYZca{} 10.6f\PYZcb{}}\PY{l+s+s1}{ | }\PY{l+s+si}{\PYZob{}:\PYZca{} 12.6f\PYZcb{}}\PY{l+s+s1}{ |}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{xn\PYZus{}m1}\PY{p}{,} \PY{n}{xn}\PY{p}{,} \PY{n}{Nn}\PY{p}{,} \PY{n}{Dn}\PY{p}{,} \PY{n}{dx}\PY{p}{)}\PY{p}{)}
+        
+            \PY{n}{xn\PYZus{}m1} \PY{o}{=} \PY{n}{xn}
+            \PY{n}{xn} \PY{o}{=} \PY{n}{xn\PYZus{}p1}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{=}\PY{l+s+s1}{\PYZsq{}}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{10}\PY{o}{*}\PY{l+m+mi}{5}\PY{o}{+}\PY{l+m+mi}{12}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{l+m+mi}{6}\PY{o}{+}\PY{l+m+mi}{7}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Maka diperoleh nilai akar\PYZhy{}akarnya = }\PY{l+s+si}{\PYZob{}:10.6f\PYZcb{}}\PY{l+s+s1}{ dengan f(x\PYZus{}}\PY{l+s+s1}{\PYZob{}\PYZob{}}\PY{l+s+s1}{n+1\PYZcb{}\PYZcb{}) = }\PY{l+s+si}{\PYZob{}:15.10f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{xn}\PY{p}{,} \PY{n}{f}\PY{p}{(}\PY{n}{xn}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+=================================================================================
+|                   Solusi Numerik Menggunakan Metoda Secant                    |
+=================================================================================
+|     n      |  x\_\{n-1\}   |    x\_n     |    N\_n     |    D\_n     | x\_\{n+1\}-x\_n  |
+=================================================================================
+|     1      |  0.393420  |  0.320000  |  0.014265  | -0.201338  |   0.070852   |
+|     2      |  0.320000  |  0.390852  | -0.000016  |  0.194073  |   0.000081   |
+|     3      |  0.390852  |  0.390933  |  0.000000  |  0.000229  |  -0.000002   |
+|     4      |  0.390933  |  0.390930  |  0.000000  | -0.000007  |   0.000000   |
+|     5      |  0.390930  |  0.390930  | -0.000000  |  0.000000  |   0.000000   |
+|     6      |  0.390930  |  0.390930  |  0.000000  |  0.000000  |   0.000000   |
+=================================================================================
+Maka diperoleh nilai akar-akarnya =   0.390930 dengan f(x\_\{n+1\}) =    0.0000000000
+
+    \end{Verbatim}
+
+    \paragraph{\texorpdfstring{Solusi Numerik Metoda
+\emph{Secant}}{Solusi Numerik Metoda Secant}}\label{solusi-numerik-metoda-secant}
+
+Dengan menggunakan prosedur diatas dan dilakukan iterasi sebanyak \(6\)
+kali, diperoleh bahwa nilai \(y_n = 0.390930\ m\) dengan nilai
+\(f(x_k) = 0.0000000000\). Dari tabel hasil perhitungan diatas, dapat
+dilihat bahwa nilai akarnya sudah dapat ditemukan pada langkah ke \(4\)
+jika error yang ditargetkan \(\epsilon = 0.000001\).
+
+    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsection{Kesimpulan}\label{kesimpulan}
+
+Ringkasan dari penyelesaian permasalahan dengan 3 metoda yaitu
+\emph{Interval-Halving, Newton-Rhapson, Secant}:
+
+\[\begin{array}{|l|c|c|c|c|}
+\hline
+\text{Metoda} & \text{Jumlah Iterasi Coba} & y_{n0} & f(y_{n0}) & \text{Jumlah Iterasi jika } \epsilon = 0.000001 \\
+\hline
+\text{Interval-Halving} & 20 & 0.390930 & 0.0000001907 & 16 \\
+\text{Newton-Rhapson} & 10 & 0.390930 & 0.0000000000 & 4 \\
+\text{Secant} & 6 & 0.390930 & 0.0000000000 & 4 \\\hline
+\end{array}
+\]
+
+Dari ketiga metoda diatas, metoda \emph{Newton-Rhapson} dan
+\emph{Secant} memiliki iterasi yang lebih sedikit dengan
+\(\epsilon = 1\times10^{-6}\), akan tetapi metoda \emph{Newton-Rhapson}
+memerlukan persamaan turunan \(f'(y)\) yang jika persamaannya akan sulit
+diturunkan jika dilakukan secara manual. Sedangkan metoda \emph{Secant}
+hanya menggunakan persamaan \(f(y)\).
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
