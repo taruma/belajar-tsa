@@ -21,47 +21,70 @@ def set_case(u=0.1, D=0.5, gamma=0.1, rho=1, dx=0.2, phiA=1, phiB=0):
     return {'u': u, 'F': F, 'D': D, 'gamma': gamma, 
             'rho': rho, 'dx': dx, 'phiA': phiA, 'phiB': phiB}
 
-def positive_nodes(position, F, D, phiA, phiB):
-    if position.lower() == 'mid':
-        aW, aE = F + D, D
-        SP = 0
-        Su = 0
-        aP = aW + aE + SP
-        return aW, aP, aE, Su    
-    elif position.lower() == 'left':
-        aW, aE = 0, D
-        SP = F + 2*D
-        Su = (F+2*D)*phiA
-        aP = aW + aE + SP
-        return aW, aP, aE, Su
-    elif position.lower() == 'right':
-        aW, aE = F+D, 0
-        SP = 2*D
-        Su = 2*D*phiB
-        aP = aW + aE + SP
-        return aW, aP, aE, Su
-
-def calc_matrix(mat_a, mat_d, node_set, val):
+def equation_nodes(direction, position, case):
+    keys = ('F', 'D', 'phiA', 'phiB')
+    F, D, phiA, phiB = [case[x] for x in keys]
+    if direction:
+        if position.lower() == 'mid':
+            aW, aE = F + D, D
+            SP = 0
+            Su = 0
+            aP = aW + aE + SP
+            return aW, aP, aE, Su    
+        elif position.lower() == 'left':
+            aW, aE = 0, D
+            SP = F + 2*D
+            Su = (F+2*D)*phiA
+            aP = aW + aE + SP
+            return aW, aP, aE, Su
+        elif position.lower() == 'right':
+            aW, aE = F+D, 0
+            SP = 2*D
+            Su = 2*D*phiB
+            aP = aW + aE + SP
+            return aW, aP, aE, Su
+    else:
+        if position.lower() == 'mid':
+            aW, aE = D, D-F
+            SP = 0
+            Su = 0
+            aP = aW + aE + SP
+            return aW, aP, aE, Su    
+        elif position.lower() == 'left':
+            aW, aE = 0, D-F
+            SP = 2*D
+            Su = phiA*(2*D)
+            aP = aW + aE + SP
+            return aW, aP, aE, Su
+        elif position.lower() == 'right':
+            aW, aE = D, 0
+            SP = 2*D-F
+            Su = phiB*(2*D-F)
+            aP = aW + aE + SP
+            return aW, aP, aE, Su
+        
+def calc_matrix(mat_a, mat_d, node_set, case):
     """
-    Calculate matrix
+    Calculate matrix based on direction
     """
-    F, D, phiA, phiB = val[0], val[1], val[2], val[3]
+    F = case['F']
+    direction = True if F >= 0 else False
     
     for i in range(0, nodes):
         for j in range(0, nodes):
             if i == j and i == 0:
-                aW, aP, aE, Su = node_set('left', F, D, phiA, phiB)
+                aW, aP, aE, Su = node_set(direction, 'left', case)
                 mat_a[i, j] = aP
                 mat_a[i, j+1] = -aE
                 mat_d[i] = Su
             elif i == j and (i > 0 and i < nodes-1):
-                aW, aP, aE, Su = node_set('mid', F, D, phiA, phiB)
+                aW, aP, aE, Su = node_set(direction, 'mid', case)
                 mat_a[i, j-1] = -aW
                 mat_a[i, j] = aP
                 mat_a[i, j+1] = -aE
                 mat_d[i] = Su
             elif i == j and (i == nodes-1):
-                aW, aP, aE, Su = node_set('right', F, D, phiA, phiB)
+                aW, aP, aE, Su = node_set(direction, 'right', case)
                 mat_a[i, j-1] = -aW
                 mat_a[i, j] = aP
                 mat_d[i] = Su
@@ -70,6 +93,11 @@ def prep_y(matrix, A, B):
     y_num = np.append(matrix, B)
     y_num = np.insert(y_num, 0, A)
     return y_num
+
+def create_xy(func, L=1, n=50):
+    x = np.linspace(0, L, n)
+    y = func(x)
+    return x, y
 
 # PROGRAM Here
 if __name__ == '__main__':
@@ -89,7 +117,7 @@ if __name__ == '__main__':
     c1_axisx = create_axis(nodes, L)
     # Buat Matrix
     matc1a, matc1d = create_zmatrix(nodes)
-    calc_matrix(matc1a, matc1d, positive_nodes, [c1F, c1D, c1phiA, c1phiB])
+    calc_matrix(matc1a, matc1d, equation_nodes, dc1)
     matc1x = np.linalg.solve(matc1a, matc1d)
     c1_y = prep_y(matc1x, c1phiA, c1phiB)
     
@@ -108,7 +136,7 @@ if __name__ == '__main__':
     plt.grid()
     
     # CASE 2 (u=2.5)
-    dc2 = set_case(u=2.5, dx=dx, rho=rho, gamma=gamma)
+    dc2 = set_case(u=-2.5, dx=dx, rho=rho, gamma=gamma)
     c2phiA, c2phiB = dc2['phiA'], dc2['phiB']
     c2u, c2F, c2D = dc2['u'], dc2['F'], dc2['D']
 
@@ -116,13 +144,12 @@ if __name__ == '__main__':
     c2_axisx = create_axis(nodes, L)
     # Buat Matrix
     matc2a, matc2d = create_zmatrix(nodes)
-    calc_matrix(matc2a, matc2d, positive_nodes, [c2F, c2D, c2phiA, c2phiB])
+    calc_matrix(matc2a, matc2d, equation_nodes, dc2)
     matc2x = np.linalg.solve(matc2a, matc2d)
     c2_y = prep_y(matc2x, c2phiA, c2phiB)
     
     # Exact Solution
-    c2_exactx = np.linspace(0, L, 50)
-    c2_exacty = func_c2exact(c2_exactx)
+    c2_exactx, c2_exacty = create_xy(func_c2exact)
     
     # plotting
     plt.figure(2)
