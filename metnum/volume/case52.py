@@ -19,6 +19,8 @@ def parse_command_line():
     optional arguments:
       -h, --help            show this help message and exit
       -n, --nodes           nodes (positive integer)
+      -c1, --case1          show only case 1
+      -c2, --case2          show only case 2
 
     args:
         None
@@ -31,6 +33,9 @@ def parse_command_line():
     # Optional Argument
     parser.add_argument('-n', '--nodes', metavar='nodes', type=int, 
                         default=5, help='nodes (positive integer)')
+    parser.add_argument('-c1', '--case1', action='store_true', help='show only case 1')
+    parser.add_argument('-c2', '--case2', action='store_true', help='show only case 2')
+    
     return parser.parse_args()
 
 def func_c1exact(x):
@@ -162,24 +167,85 @@ def plot_this(num, x1, y1, x2, y2, title=''):
     plt.plot(x2, y2, 'y--', label='analytical')
     plt.legend()
     plt.grid()
-    plt.show()
+    #plt.show()
     
-def print_error(y_num, y_exact):
-    for counter, val in enumerate(y_num):
-        hasil = (y_exact[counter] - val)/val*100
-        print('Percentage Error pada titik {:3d} = {:2.2f}'.format(counter, hasil))
+def calc_error(var, sol_num, func, title='Percentage Error',
+               kolom=15, prec=6):
+    nodes, L = var['nodes'], var['L']
+    
+    node = np.arange(1, nodes+1)
+    distance = create_axis(nodes, L)[1:-1]
+    sol_exact = func(distance)
+    sol_num = sol_num[1:-1]
+    
+    diff, percenterr = [], []
+    for i, val in enumerate(sol_exact):
+        dval = val - sol_num[i]
+        diff.append(dval)
+        percenterr.append(dval/val*100)
+    
+    lebar = kolom*6+7
+    print('='*lebar)
+    print('{:^{l:d}s}'.format(title, l=lebar))
+    print('='*lebar)
+    print('|{:^{k:d}s}|{:^{k:d}s}|{:^{k:d}s}|{:^{k:d}s}|{:^{k:d}s}|{:^{k:d}s}|'.format(
+            'node', 'distance', 'numeric', 'exact', 'diff', 'error', k=kolom))
+    print('-'*lebar)
+    
+    for i in range(0, nodes):
+        print('| {:^{k:d}d} | {:> {k:d}.{p:d}f} | {:> {k:d}.{p:d}f} | {:> {k:d}.{p:d}f} | {:> {k:d}.{p:d}f} | {:> {k:d}.{p:d}f} |'.format(
+                node[i], distance[i], sol_num[i], sol_exact[i], diff[i], percenterr[i], k=kolom-2, p=prec
+                ))
+    print('='*lebar)
+    
+def print_info(var, case, title='Case', kolom=20):
+    def print_desc(desc, val, unit):
+        print('| {:<{k:d}s} | {:> {k:d}f} | {:^{k:d}s} |'.format(
+                desc, val, unit, k=kolom-2))
+    
+    lebar = kolom*3+4
+    print('='*lebar)
+    print('|{:^{l:d}s}|'.format(title, l=lebar-2))
+    print('='*lebar)
+    print('|{:^{k:d}s}|{:^{k:d}s}|{:^{k:d}s}|'.format('description', 'value', 'unit', k=kolom))
+    print('-'*lebar)
+    
+    nodes, rho, gamma, dx, L = map(var.get, ('nodes', 'rho', 'gamma', 'dx', 'L'))
+    u, F, D = map(case.get, ('u', 'F', 'D'))
+    
+    print_desc('\\rho', rho, 'kg/(m^3)')
+    print_desc('\\gamma', gamma, 'kg/(m.s)')
+    print_desc('L', L, 'm')
+    print_desc('nodes', nodes, '-')
+    print_desc('dx', dx, 'm')
+    print('-'*lebar)
+    print_desc('u', u, 'm/s')
+    print_desc('F', F, '-')
+    print_desc('D', D, '-')
+    print('='*lebar)
+    print()
 
-# PROGRAM Here
+# MAIN PROGRAM Here
 if __name__ == '__main__':
     args = parse_command_line()
-    nodes = args.nodes
-    var = set_var(nodes=nodes)
-    dx, rho, gamma = var['dx'], var['rho'], var['gamma']
+    var = set_var(nodes=args.nodes)
+    dx, rho, gamma, nodes = var['dx'], var['rho'], var['gamma'], var['nodes']
     
-    case1 = set_case(u=0.1, dx=dx, rho=rho, gamma=gamma)
-    (x1, y1), (x2, y2) = calc_case(var, case1, 1)
-    plot_this(1, x1, y1, x2, y2, 'case 1 $u = 0.1$')
+    check = True if not ((args.case1) or (args.case2)) else False
     
-    case2 = set_case(u=2.5, dx=dx, rho=rho, gamma=gamma)
-    (x1, y1), (x2, y2) = calc_case(var, case2, 2)
-    plot_this(2, x1, y1, x2, y2, 'case 2 $u = 2.5$')
+    if args.case1 or check:
+        case1 = set_case(u=0.1, dx=dx, rho=rho, gamma=gamma)
+        print_info(var, case1, title='Case 1')
+        (x1, y1), (x2, y2) = calc_case(var, case1, 1)
+        calc_error(var, y1, func_c1exact, title='Percentage Error Case 1')
+        plot_this(1, x1, y1, x2, y2, 'case 1 $u = 0.1$')
+    
+    print('\n'*2)
+    
+    if args.case2 or check:
+        case2 = set_case(u=2.5, dx=dx, rho=rho, gamma=gamma)
+        print_info(var, case2, title='Case 2')
+        (x1, y1), (x2, y2) = calc_case(var, case2, 2)
+        calc_error(var, y1, func_c2exact, title='Percentage Error Case 2')
+        plot_this(2, x1, y1, x2, y2, 'case 2 $u = 2.5$')
+    plt.show()
