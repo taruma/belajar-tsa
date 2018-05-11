@@ -1,0 +1,592 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Metnum-Case4.2}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \subsubsection{Example 4.2}\label{example-4.2}
+
+Penyelesaian Example 4.2 dari Buku \textbf{An Introduction to
+Computational Fluid Dynamics: The Finite Volume Method} Edisi ke-2 oleh
+Henk Kaarle Versteeg \& Weeratunge Malalasekera, Halaman 121.
+
+Diketahui: Tebal plat \(L = 2 cm = 0.02\ m\) dengan konduktivitas
+\(k = 0.5\ W/m.K\) dan \emph{Uniform heat generation}
+\(q = 1000\ kW/m^{3}\). Pada titik A dan B memiliki suhu sebesar
+\(100^{o}C\) dan \(200^{o}C\). Lihat Gambar:
+
+Persamaan Pengatur:
+\[\frac{\mathrm{d}}{\mathrm{d}x} \left( k\frac{\mathrm{d}T}{\mathrm{d}x} \right) + q = 0\]
+
+    \section{Solusi}\label{solusi}
+
+Metode ini menggunakan grid sederhana. Domain dibagi menjadi 5 kontrol
+volume, sehingga diketahui nilai \(\delta x =\ 0.004\ m\). Grid sebagai
+berikut:
+
+\subsection{Noda Tengah (Titik 2, 3, 4)}\label{noda-tengah-titik-2-3-4}
+
+Diintegrasikan persamaan pengatur:
+\[ \int\limits_{\Delta V}\ \frac{d}{dx} \left( k\frac{dT}{dx} \right) \text{d}V + \int\limits_{\Delta V} q \text{d}V = 0\]
+
+Suku pertama di integralkan seperti contoh sebelumnya, sedangkan suku
+kedua, dievaluasi dengan rata-rata (i.e. \(\bar{S}\Delta V=q\Delta V\))
+pada kontrol volume. Persamaan diatas dapat ditulis:
+
+\[\begin{aligned}
+\left[ \left( k A \frac{\text{d}T}{\text{d}x} \right)_e -
+\left( k A \frac{\text{d}T}{\text{d}x} \right)_w \right] 
++q \Delta V = 0 \\
+\left[ k_e A \left(\frac{T_E-T_P}{\delta x} \right) - k_w A \left(\frac{T_P-T_W}{\delta x} \right) \right]
++ q A \delta x = 0 \\
+\left(\frac{k_e A}{\delta x} + \frac{k_w A}{\delta x}\right)T_P = \left(\frac{k_w A}{\delta x}\right)T_W +
+\left(\frac{k_w A}{\delta x} \right)T_E + q A \delta x \\
+\end{aligned}\]
+
+Dalam bentuk umum serupa dengan: \[a_P T_P = a_W T_W+a_E T_E + S_u\]
+
+karena \(k_e = k_w = k\) maka diperoleh persamaan:
+
+\[\begin{array}{|c|c|c|c|c|}\hline a_W & a_E & a_P & S_P & S_u \\
+\hline
+\frac{k A}{\delta x} & \frac{k A}{\delta x} & a_W+a_E-S_P & 0 & qA\delta x \\ \hline
+\end{array}
+\]
+
+Persamaan diatas hanya berlaku untuk noda di tengah (contoh: noda 2, 3
+dan 4).
+
+\subsection{Noda Tepi Kiri (titik 1)}\label{noda-tepi-kiri-titik-1}
+
+Hasil integrasi persamaan sebelumnya pada titik 1 sebagai berikut:
+
+\[\begin{aligned}
+\left[ \left( k A \frac{\text{d}T}{\text{d}x} \right)_e -
+\left( k A \frac{\text{d}T}{\text{d}x} \right)_w \right] 
++q \Delta V = 0 \\
+\left[ k_e A \left(\frac{T_E-T_P}{\delta x} \right) - k_A A \left(\frac{T_P-T_A}{\delta x/2} \right) \right]
++ q A \delta x = 0 \\
+\end{aligned}\]
+
+karena \(k_e = k_w = k\) maka diperoleh persamaan:
+\[a_P T_P = a_W T_W+a_E T_E + S_u\]
+
+yang:
+
+\[\begin{array}{|c|c|c|c|c|}\hline a_W & a_E & a_P & S_P & S_u \\
+\hline
+0 & \frac{k A}{\delta x} & a_W+a_E-S_P & -\frac{2kA}{\delta x} & qA\delta x + \frac{2kA}{\delta x}T_A \\ \hline
+\end{array}\]
+
+\subsection{Noda Tepi Kanan (titik 5)}\label{noda-tepi-kanan-titik-5}
+
+Hasil integrasi yang serupa pada titik 5 sebagai berikut:
+
+\[\begin{aligned}
+\left[ \left( k A \frac{\text{d}T}{\text{d}x} \right)_e -
+\left( k A \frac{\text{d}T}{\text{d}x} \right)_w \right] 
++q \Delta V = 0 \\
+\left[ k_B A \left(\frac{T_B-T_P}{\delta x} \right) - k_w A \left(\frac{T_P-T_W}{\delta x/2} \right) \right]
++ q A \delta x = 0 \\
+\end{aligned}\]
+
+karena \(k_e = k_w = k\) maka diperoleh persamaan:
+\[a_P T_P = a_W T_W+a_E T_E + S_u\]
+
+yang:
+
+\[\begin{array}{|c|c|c|c|c|}\hline a_W & a_E & a_P & S_P & S_u \\
+\hline
+\frac{k A}{\delta x} & 0 & a_W+a_E-S_P & -\frac{2kA}{\delta x} & qA\delta x + \frac{2kA}{\delta x}T_B \\ \hline
+\end{array}\]
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\subsection{Dalam Bentuk Matriks}\label{dalam-bentuk-matriks}
+
+Persamaan diatas dapat disusun dalam bentuk matriks (jika 5 noda):
+
+\[\left[ \begin{array}{ccccc}a_P & -a_E & 0 & 0 & 0 \\
+-a_W & a_P & -a_E & 0 & 0 \\
+0 & -a_W & a_P & -a_E & 0 \\
+0 & 0 & -a_W & a_P & -a_E \\
+0 & 0 & 0 & -a_W & a_P \\\end{array}\right]
+\left[ \begin{array}{c} T_1 \\ T_2 \\ T_3 \\ T_4 \\ T_5 \end{array} \right] = 
+\left[ \begin{array}{c} S_u \\ S_u \\ S_u \\ S_u \\ S_u \end{array} \right]
+\]
+
+dengan catatan, pada baris \(1\) dan \(5\) nilai \(a_W, a_P, a_E\)
+menggunakan persamaan yang berbeda dari baris lainnya. Matrix
+\(\left[ \begin{array}{c} T_1 \\ T_2 \\ T_3 \\ T_4 \\ T_5 \end{array} \right]\)
+dapat dicari dengan menggunakan metoda algoritma Thomas. Dalam python
+dapat menggunakan \emph{numpy.linalg.solve()} dari library \emph{numpy}.
+
+\subsection{Perbandingan solusi
+analitik}\label{perbandingan-solusi-analitik}
+
+Hasil numerik bisa dibandingkan dengan persamaan solusi analitik:
+\[T = \left[\frac{T_B-T_A}{L}+\frac{q}{2k}(L-x)\right]x+T_A\]
+
+    \section{Pemrograman Python}\label{pemrograman-python}
+
+Solusi numerik dicoba menggunakan Python dengan menggunakan beberapa
+library antara lain numpy, decimal, matplotlib. Menggunakan fungsi
+\emph{add\_dec} dan \emph{create\_axis} yang diperoleh dari
+\textbf{metnum\_uma.py}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        \PY{k+kn}{from} \PY{n+nn}{decimal} \PY{k}{import} \PY{n}{Decimal} \PY{k}{as} \PY{n}{dec}
+        \PY{k+kn}{from} \PY{n+nn}{metnum\PYZus{}uma} \PY{k}{import} \PY{n}{add\PYZus{}dec}\PY{p}{,} \PY{n}{create\PYZus{}axis} 
+        
+        \PY{c+c1}{\PYZsh{} Diketahui:}
+        \PY{n}{L} \PY{o}{=} \PY{l+m+mf}{0.02}  \PY{c+c1}{\PYZsh{} (m) \PYZhy{} Tebal plat}
+        \PY{n}{k} \PY{o}{=} \PY{l+m+mf}{0.5}  \PY{c+c1}{\PYZsh{} (W/m.K) \PYZhy{} konduktivitas}
+        \PY{n}{q} \PY{o}{=} \PY{l+m+mi}{1000}\PY{o}{*}\PY{l+m+mi}{1000}  \PY{c+c1}{\PYZsh{} (kW/m\PYZca{}3) \PYZhy{} Uniform Heat Generation}
+        \PY{n}{TA}\PY{p}{,} \PY{n}{TB} \PY{o}{=} \PY{l+m+mi}{100}\PY{p}{,} \PY{l+m+mi}{200}  \PY{c+c1}{\PYZsh{} (C) \PYZhy{} suhu di titik A}
+        \PY{n}{dx} \PY{o}{=} \PY{l+m+mf}{0.002}  \PY{c+c1}{\PYZsh{} (m) \PYZhy{} jarak grid control volume}
+        \PY{n}{A} \PY{o}{=} \PY{l+m+mi}{1}  \PY{c+c1}{\PYZsh{} (m\PYZca{}2) \PYZhy{} Luasan}
+        
+        \PY{n}{nodes} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{L}\PY{o}{/}\PY{n}{dx}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Suhu di titik }\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{A = }\PY{l+s+si}{\PYZob{}:\PYZgt{}5d\PYZcb{}}\PY{l+s+s1}{ C}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Suhu di titik }\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{B = }\PY{l+s+si}{\PYZob{}:\PYZgt{}5d\PYZcb{}}\PY{l+s+s1}{ C}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{dengan panjang }\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{L = }\PY{l+s+si}{\PYZob{}:\PYZgt{}1.3f\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+            \PY{n}{TA}\PY{p}{,} \PY{n}{TB}\PY{p}{,} \PY{n}{L}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Jumlah Noda }\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{  = }\PY{l+s+si}{\PYZob{}:\PYZgt{}5d\PYZcb{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{dengan dx = }\PY{l+s+si}{\PYZob{}:1.3f\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{nodes}\PY{p}{,} \PY{n}{dx}\PY{p}{)}\PY{p}{)}
+        \PY{n}{axisx} \PY{o}{=} \PY{n}{create\PYZus{}axis}\PY{p}{(}\PY{n}{nodes}\PY{p}{,} \PY{n}{dx}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Suhu di titik 	A =   100 C
+Suhu di titik 	B =   200 C
+dengan panjang 	L = 0.020 m
+Jumlah Noda 	  =    10	dengan dx = 0.002 m
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{\PYZsh{} Buat Matrix Penyelesaian}
+        \PY{n}{mat\PYZus{}a} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{[}\PY{n}{nodes}\PY{p}{,} \PY{n}{nodes}\PY{p}{]}\PY{p}{)}
+        \PY{n}{mat\PYZus{}d} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{[}\PY{n}{nodes}\PY{p}{]}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Buat Matrix A}
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{nodes}\PY{p}{)}\PY{p}{:}
+            \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{nodes}\PY{p}{)}\PY{p}{:}
+                \PY{k}{if} \PY{n}{i} \PY{o}{==} \PY{n}{j} \PY{o+ow}{and} \PY{p}{(}\PY{n}{i} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} Baris Pertama (Titik A)}
+                    \PY{n}{aW} \PY{o}{=} \PY{l+m+mi}{0}
+                    \PY{n}{aE} \PY{o}{=} \PY{n}{k}\PY{o}{*}\PY{n}{A}\PY{o}{/}\PY{n}{dx}
+                    \PY{n}{SP} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k}\PY{o}{*}\PY{n}{A}\PY{o}{/}\PY{n}{dx}
+                    \PY{n}{aP} \PY{o}{=} \PY{n}{aW} \PY{o}{+} \PY{n}{aE} \PY{o}{\PYZhy{}} \PY{n}{SP}
+                    \PY{n}{mat\PYZus{}a}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{n}{aP}
+                    \PY{n}{mat\PYZus{}a}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{n}{aE}
+                \PY{c+c1}{\PYZsh{} Baris Kedua sampai satu sebelum terakhir}
+                \PY{k}{elif} \PY{n}{i} \PY{o}{==} \PY{n}{j} \PY{o+ow}{and} \PY{p}{(}\PY{n}{i} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0} \PY{o+ow}{and} \PY{n}{i} \PY{o}{\PYZlt{}} \PY{n}{nodes}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{aW} \PY{o}{=} \PY{n}{k}\PY{o}{*}\PY{n}{A}\PY{o}{/}\PY{n}{dx}
+                    \PY{n}{aE} \PY{o}{=} \PY{n}{k}\PY{o}{*}\PY{n}{A}\PY{o}{/}\PY{n}{dx}
+                    \PY{n}{SP} \PY{o}{=} \PY{l+m+mi}{0}
+                    \PY{n}{aP} \PY{o}{=} \PY{n}{aW} \PY{o}{+} \PY{n}{aE} \PY{o}{\PYZhy{}} \PY{n}{SP}
+                    \PY{n}{mat\PYZus{}a}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{n}{aW}
+                    \PY{n}{mat\PYZus{}a}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{n}{aP}
+                    \PY{n}{mat\PYZus{}a}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{n}{aE}
+                \PY{k}{elif} \PY{n}{i} \PY{o}{==} \PY{n}{j} \PY{o+ow}{and} \PY{p}{(}\PY{n}{i} \PY{o}{==} \PY{n}{nodes}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} Baris Terakhir (Titik B)}
+                    \PY{n}{aW} \PY{o}{=} \PY{n}{k}\PY{o}{*}\PY{n}{A}\PY{o}{/}\PY{n}{dx}
+                    \PY{n}{aE} \PY{o}{=} \PY{l+m+mi}{0}
+                    \PY{n}{SP} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k}\PY{o}{*}\PY{n}{A}\PY{o}{/}\PY{n}{dx}
+                    \PY{n}{aP} \PY{o}{=} \PY{n}{aW} \PY{o}{+} \PY{n}{aE} \PY{o}{\PYZhy{}} \PY{n}{SP}
+                    \PY{n}{mat\PYZus{}a}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{n}{aW}
+                    \PY{n}{mat\PYZus{}a}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{n}{aP}
+        
+        \PY{c+c1}{\PYZsh{} Matrix D}
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{nodes}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{i} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{Su} \PY{o}{=} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k}\PY{o}{*}\PY{n}{A}\PY{o}{*}\PY{n}{TA}\PY{o}{/}\PY{n}{dx} \PY{o}{+} \PY{n}{q}\PY{o}{*}\PY{n}{A}\PY{o}{*}\PY{n}{dx}
+                \PY{n}{mat\PYZus{}d}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{Su}
+            \PY{k}{elif} \PY{n}{i} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0} \PY{o+ow}{and} \PY{n}{i} \PY{o}{\PYZlt{}} \PY{n}{nodes}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+                \PY{n}{Su} \PY{o}{=} \PY{n}{q}\PY{o}{*}\PY{n}{A}\PY{o}{*}\PY{n}{dx}
+                \PY{n}{mat\PYZus{}d}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{Su}
+            \PY{k}{elif} \PY{n}{i} \PY{o}{==} \PY{n}{nodes}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+                \PY{n}{Su} \PY{o}{=} \PY{n}{q}\PY{o}{*}\PY{n}{A}\PY{o}{*}\PY{n}{dx} \PY{o}{+} \PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k}\PY{o}{*}\PY{n}{A}\PY{o}{*}\PY{n}{TB}\PY{o}{/}\PY{n}{dx}
+                \PY{n}{mat\PYZus{}d}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{Su}
+        
+        \PY{c+c1}{\PYZsh{} Penyelesaian Matrix}
+        \PY{n}{result} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{solve}\PY{p}{(}\PY{n}{mat\PYZus{}a}\PY{p}{,} \PY{n}{mat\PYZus{}d}\PY{p}{)}
+        \PY{n}{y\PYZus{}num} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{result}\PY{p}{,} \PY{n}{TB}\PY{p}{)}
+        \PY{n}{y\PYZus{}num} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{insert}\PY{p}{(}\PY{n}{y\PYZus{}num}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{TA}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{hasil\PYZus{}exact}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{TB}\PY{p}{,} \PY{n}{TA}\PY{p}{,} \PY{n}{L}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:}
+            \PY{k}{return} \PY{p}{(}\PY{p}{(}\PY{n}{TB}\PY{o}{\PYZhy{}}\PY{n}{TA}\PY{p}{)}\PY{o}{/}\PY{n}{L} \PY{o}{+} \PY{p}{(}\PY{n}{q}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{L}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{n}{x} \PY{o}{+} \PY{n}{TA}
+        
+        \PY{c+c1}{\PYZsh{} Solusi Analitik}
+        \PY{n}{nodes\PYZus{}exact} \PY{o}{=} \PY{l+m+mi}{100}  \PY{c+c1}{\PYZsh{} Jumlah titik untuk solusi analitik}
+        \PY{n}{exact} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        \PY{n}{axisx\PYZus{}exact} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{L}\PY{p}{,} \PY{n}{nodes\PYZus{}exact}\PY{p}{)}
+        \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{axisx\PYZus{}exact}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}hasil = ((TB\PYZhy{}TA)/L + (q/(2*k)*(L\PYZhy{}x)))*x + TA}
+            \PY{n}{hasil} \PY{o}{=} \PY{n}{hasil\PYZus{}exact}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{TB}\PY{p}{,} \PY{n}{TA}\PY{p}{,} \PY{n}{L}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{k}\PY{p}{)}
+            \PY{n}{exact}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{hasil}\PY{p}{)}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Matrix A = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{=====}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{mat\PYZus{}a}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Matrix D = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{=====}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{mat\PYZus{}d}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}
+            \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Penyelesaian Matrix [AX = D], diperoleh matrix X = }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{=====}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{result}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Matrix A = 
+[[ 750. -250.    0.    0.    0.    0.    0.    0.    0.    0.]
+ [-250.  500. -250.    0.    0.    0.    0.    0.    0.    0.]
+ [   0. -250.  500. -250.    0.    0.    0.    0.    0.    0.]
+ [   0.    0. -250.  500. -250.    0.    0.    0.    0.    0.]
+ [   0.    0.    0. -250.  500. -250.    0.    0.    0.    0.]
+ [   0.    0.    0.    0. -250.  500. -250.    0.    0.    0.]
+ [   0.    0.    0.    0.    0. -250.  500. -250.    0.    0.]
+ [   0.    0.    0.    0.    0.    0. -250.  500. -250.    0.]
+ [   0.    0.    0.    0.    0.    0.    0. -250.  500. -250.]
+ [   0.    0.    0.    0.    0.    0.    0.    0. -250.  750.]]
+=====
+Matrix D = 
+[ 52000.   2000.   2000.   2000.   2000.   2000.   2000.   2000.   2000.
+ 102000.]
+=====
+Penyelesaian Matrix [AX = D], diperoleh matrix X = 
+[125. 167. 201. 227. 245. 255. 257. 251. 237. 215.]
+=====
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+        
+        \PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{figure.figsize}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Comparison Numerical vs. Analytical Solution}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Distance x (m)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Temperature \PYZdl{}(\PYZca{}}\PY{l+s+si}{\PYZob{}o\PYZcb{}}\PY{l+s+s1}{C)\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{axisx}\PY{p}{,} \PY{n}{y\PYZus{}num}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ro}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{numerical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{axisx\PYZus{}exact}\PY{p}{,} \PY{n}{exact}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y\PYZhy{}\PYZhy{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{analytical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+        
+        \PY{n}{node\PYZus{}ann} \PY{o}{=} \PY{l+m+mi}{3}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Numerical}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{xy}\PY{o}{=}\PY{p}{(}\PY{n}{axisx}\PY{p}{[}\PY{n}{node\PYZus{}ann}\PY{p}{]}\PY{p}{,} \PY{n}{y\PYZus{}num}\PY{p}{[}\PY{n}{node\PYZus{}ann}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n}{xytext}\PY{o}{=}\PY{p}{(}\PY{n}{axisx}\PY{p}{[}\PY{n}{node\PYZus{}ann}\PY{p}{]}\PY{p}{,} \PY{n}{y\PYZus{}num}\PY{p}{[}\PY{n}{node\PYZus{}ann}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{,}
+                     \PY{n}{arrowprops}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{arrowstyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZgt{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{connectionstyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{arc3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,}\PY{p}{)}
+        
+        \PY{n}{mid\PYZus{}exact} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{nodes\PYZus{}exact}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Exact Solution}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{xy}\PY{o}{=}\PY{p}{(}\PY{n}{axisx\PYZus{}exact}\PY{p}{[}\PY{n}{mid\PYZus{}exact}\PY{p}{]}\PY{p}{,} \PY{n}{exact}\PY{p}{[}\PY{n}{mid\PYZus{}exact}\PY{p}{]}\PY{p}{)}\PY{p}{,}
+                     \PY{n}{xytext}\PY{o}{=}\PY{p}{(}\PY{n}{axisx\PYZus{}exact}\PY{p}{[}\PY{n}{mid\PYZus{}exact}\PY{p}{]}\PY{p}{,} \PY{n}{exact}\PY{p}{[}\PY{n}{mid\PYZus{}exact}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{,}
+                     \PY{n}{arrowprops}\PY{o}{=}\PY{n+nb}{dict}\PY{p}{(}\PY{n}{arrowstyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZhy{}\PYZgt{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{connectionstyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{arc3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+        
+        \PY{n}{result\PYZus{}exact} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+        \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{axisx}\PY{p}{:}
+            \PY{n}{result\PYZus{}exact}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{hasil\PYZus{}exact}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{TB}\PY{p}{,} \PY{n}{TA}\PY{p}{,} \PY{n}{L}\PY{p}{,} \PY{n}{q}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{)}
+        
+        \PY{k}{for} \PY{n}{counter}\PY{p}{,} \PY{n}{val} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{result\PYZus{}exact}\PY{p}{)}\PY{p}{:}
+            \PY{n}{hasil} \PY{o}{=} \PY{p}{(}\PY{n}{y\PYZus{}num}\PY{p}{[}\PY{n}{counter}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{val}\PY{p}{)}\PY{o}{/}\PY{n}{val}\PY{o}{*}\PY{l+m+mi}{100}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Percentage Error pada titik }\PY{l+s+si}{\PYZob{}:3d\PYZcb{}}\PY{l+s+s1}{ = }\PY{l+s+si}{\PYZob{}:2.2f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{counter}\PY{p}{,} \PY{n}{hasil}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_5_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Percentage Error pada titik   0 = 0.00
+Percentage Error pada titik   1 = 0.81
+Percentage Error pada titik   2 = 0.60
+Percentage Error pada titik   3 = 0.50
+Percentage Error pada titik   4 = 0.44
+Percentage Error pada titik   5 = 0.41
+Percentage Error pada titik   6 = 0.39
+Percentage Error pada titik   7 = 0.39
+Percentage Error pada titik   8 = 0.40
+Percentage Error pada titik   9 = 0.42
+Percentage Error pada titik  10 = 0.47
+Percentage Error pada titik  11 = 0.00
+
+    \end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

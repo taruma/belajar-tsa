@@ -6,7 +6,6 @@ import argparse
 from numpy import exp
 from case42 import create_zmatrix, create_axis
 
-
 def parse_command_line():
     """
     Parse the command line arguments and return the parse_args object.
