@@ -28,24 +28,81 @@ def parse_command_line():
     return parser.parse_args()
 
 def func_c1exact(x):
+    """
+    Return value of exact solution of case 1
+    
+    args:
+        x: distance (m)
+    
+    returns:
+        float: based on x
+    """
     x = np.array(x)
     return (2.7183-exp(x))/1.7183
 
 def func_c2exact(x):
+    """
+    Return value of exact solution of case 2
+    
+    args:
+        x: distance (m)
+    
+    returns:
+        float: based on x
+    """
     return 1+(1-exp(25*x))/(7.2*10**10)
 
 def set_var(L=1, rho=1, gamma=0.1, nodes=5):
+    """
+    Set variable/parameter
+    
+    args:
+        L: length (m) (default=1)
+        rho: density (kg/m3) (default=1)
+        gamma: gamma (kg/(m.s)) (default=0.1)
+        nodes: nodes (default=5)
+    
+    returns:
+        dictionary: with key 'L, rho, gamma, nodes, dx'
+    """
     dx = L/nodes
     return {'L': L, 'rho': rho, 'gamma': gamma, 'nodes': nodes, 'dx': dx}
 
 def set_case(u=0.1, D=0.5, gamma=0.1, rho=1, dx=0.2, phiA=1, phiB=0):
+    """
+    Set variable/parameter for specific Case
+    
+    args:
+        u: velocity (m/s) (default=0.1)
+        L: length (m) (default=1)
+        rho: density (kg/m3) (default=1)
+        gamma: gamma (kg/(m.s)) (default=0.1)
+        nodes: nodes (default=5)
+        D: (default=0.5)
+        phiA: (default=1)
+        phiB: (default=0)
+    
+    returns:
+        dictionary: with key 'u, F, D, gamma, rho, dx, phiA, phiB'
+    """
     F, D = rho*u, gamma/dx
     return {'u': u, 'F': F, 'D': D, 'gamma': gamma, 
             'rho': rho, 'dx': dx, 'phiA': phiA, 'phiB': phiB}
 
 def equation_nodes(direction, position, case):
-    keys = ('F', 'D', 'phiA', 'phiB')
-    F, D, phiA, phiB = [case[x] for x in keys]
+    """
+    Calculation based upwind scheme
+    
+    args:
+        direction: direction of flow (Boolean) (default=True as positive)
+        position: position of nodes ('left'/'mid'/'right')
+        case: dictionary of set_case
+
+    returns:
+        list: value of aW, aP, aE, Su
+    """
+    keys = 'F,D,phiA,phiB'.split(',')
+    F, D, phiA, phiB = map(case.get, keys)
     if direction:
         if position.lower() == 'mid':
             aW, aE = F + D, D
@@ -87,7 +144,14 @@ def equation_nodes(direction, position, case):
         
 def calc_matrix(mat_a, mat_d, node_set, case):
     """
-    Calculate matrix based on direction
+    Fill matrix A and D based on direction/equation of nodes
+    
+    args:
+        mat_a: Matrix A
+        mat_d: Matrix D
+        node_set: function of matrix
+        case: dictionary of case
+        
     """
     F = case['F']
     direction = True if F >= 0 else False
@@ -112,17 +176,52 @@ def calc_matrix(mat_a, mat_d, node_set, case):
                 mat_d[i] = Su
 
 def prep_y(matrix, case):
-    A, B = case['phiA'], case['phiB']
+    """
+    Return value of y including at point A and B
+    
+    args:
+        matrix: Matrix Result from solver
+        case: dictionary of case
+    
+    returns:
+        list: value of y
+    """
+    keys = 'phiA,phiB'.split(',')
+    A, B = map(case.get, keys)
     y_num = np.append(matrix, B)
     y_num = np.insert(y_num, 0, A)
     return y_num
 
 def create_xy(func, L=1, n=50):
+    """
+    Return x, y of exact solution
+    
+    args:
+        func: exact solution function
+        L: length (m) (default=1)
+        n: nodes (default=50)
+        
+    returns:
+        list (x, y)
+    """
     x = np.linspace(0, L, n)
     y = func(x)
     return x, y
 
 def calc_case(dictvar, dictcase, case=1):
+    """
+    Calculating case and returns coordinate numerical and exact solution
+    
+    args:
+        dictvar: dictionary of variable/parameter
+        dictcase: dictionary of case
+        case: number of case (default=1)
+        
+    returns:
+        (x, y) numerical solution and (x, y) exact solution
+    """
+    
+    
     varkeys = ('dx', 'nodes', 'L', 'rho', 'gamma')
     dx, nodes, L, rho, gamma = map(dictvar.get, varkeys)
 
@@ -148,6 +247,9 @@ def calc_case(dictvar, dictcase, case=1):
     return (x_num, y_num), (x_exact, y_exact)
 
 def plot_this(num, x1, y1, x2, y2, title=''):
+    """
+    Plotting the result
+    """   
     plt.figure(num)
     plt.title(title)
     plt.xlabel('Distance x (m)')
@@ -160,6 +262,9 @@ def plot_this(num, x1, y1, x2, y2, title=''):
     
 def calc_error(var, sol_num, func, title='Percentage Error',
                kolom=15, prec=6):
+    """
+    Calculate and print of Percentage Error
+    """
     nodes, L = var['nodes'], var['L']
     
     node = np.arange(1, nodes+1)
@@ -218,7 +323,8 @@ def print_info(var, case, title='Case', kolom=20):
 if __name__ == '__main__':
     args = parse_command_line()
     var = set_var(nodes=args.nodes)
-    dx, rho, gamma, nodes = var['dx'], var['rho'], var['gamma'], var['nodes']
+    keys = 'dx,rho,gamma,nodes'.split(',')
+    dx, rho, gamma, nodes = map(var.get, keys)
     
     check = True if not ((args.case1) or (args.case2)) else False
     
@@ -229,7 +335,7 @@ if __name__ == '__main__':
         calc_error(var, y1, func_c1exact, title='Percentage Error Case 1')
         plot_this(1, x1, y1, x2, y2, 'case 1 $u = 0.1$')
     
-    print('\n'*2)
+    print('-'*30)
     
     if args.case2 or check:
         case2 = set_case(u=2.5, dx=dx, rho=rho, gamma=gamma)
