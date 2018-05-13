@@ -4,6 +4,7 @@
 */.ipynb_checkpoints/*
 *.pyc
 */__pycache__/*
+*/.idea/*.*
 *.aux
 *.glo
 *.idx
@@ -28,3 +29,5 @@
 *.out
 *.synctex.gz
 *.ini
+*.iml
+*.xml
