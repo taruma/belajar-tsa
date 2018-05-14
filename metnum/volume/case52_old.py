@@ -5,7 +5,6 @@
 # by H K Versteeg, W Malalasekera
 # Example 5.2 pg. 147-149
 # Code by UMA (github: github.com/taruma/belajar-tsa)
-# Note: Run this with python command in CMD or use Spyder.
 
 # =============================================================================
 # IMPORT FUNCTION AND LIBRARY
@@ -16,11 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 from numpy import exp
-from met_uma import get_valdict, create_axis, create_dictionary, create_zmatrix
-
-# =============================================================================
-# DEFINE FUNCTION
-# =============================================================================
+from uma_func import create_zmatrix, create_axis
 
 def parse_command_line():
     """
@@ -35,7 +30,8 @@ def parse_command_line():
     parser = argparse.ArgumentParser()
 
     # Optional Argument
-    parser.add_argument('-n', '--nodes', metavar='nodes', type=int, default=5, help='nodes (positive integer)')
+    parser.add_argument('-n', '--nodes', metavar='nodes', type=int, 
+                        default=5, help='nodes (positive integer)')
     parser.add_argument('-c1', '--case1', action='store_true', help='show only case 1')
     parser.add_argument('-c2', '--case2', action='store_true', help='show only case 2')
     parser.add_argument('-nf', '--nofigure', action='store_true', help='disable figure')
@@ -52,6 +48,7 @@ def func_c1exact(x):
     returns:
         float: based on x
     """
+    x = np.array(x)
     return (2.7183-exp(x))/1.7183
 
 def func_c2exact(x):
@@ -68,7 +65,7 @@ def func_c2exact(x):
 
 def set_var(L=1, rho=1, gamma=0.1, nodes=5):
     """
-    Set general variable/parameter
+    Set variable/parameter
     
     args:
         L: length (m) (default=1)
@@ -80,30 +77,28 @@ def set_var(L=1, rho=1, gamma=0.1, nodes=5):
         dictionary: with key 'L, rho, gamma, nodes, dx'
     """
     dx = L/nodes
-    value = [L, rho, gamma, nodes, dx]
-    dictionary = create_dictionary('L,rho,gamma,nodes,dx',value)
-    return dictionary
+    return {'L': L, 'rho': rho, 'gamma': gamma, 'nodes': nodes, 'dx': dx}
 
-def set_case(dictvar, u=0.1, phiA=1, phiB=0):
+def set_case(u=0.1, D=0.5, gamma=0.1, rho=1, dx=0.2, phiA=1, phiB=0):
     """
     Set variable/parameter for specific Case
     
     args:
-        dictvar: dictionary of variable/parameter
         u: velocity (m/s) (default=0.1)
-        phiA: Value of Phi at A (default=1)
-        phiB: Value of Phi at B (default=0)
+        L: length (m) (default=1)
+        rho: density (kg/m3) (default=1)
+        gamma: gamma (kg/(m.s)) (default=0.1)
+        nodes: nodes (default=5)
+        D: (default=0.5)
+        phiA: (default=1)
+        phiB: (default=0)
     
     returns:
         dictionary: with key 'u, F, D, gamma, rho, dx, phiA, phiB'
     """
-    L, rho, gamma, nodes, dx = get_valdict(dictvar, 'L,rho,gamma,nodes,dx')
     F, D = rho*u, gamma/dx
-    val = [u, phiA, phiB, F, D, L, rho, gamma, nodes, dx]
-    
-    dictionary = create_dictionary('u,phiA,phiB,F,D,L,rho,gamma,nodes,dx', val)
-    
-    return dictionary
+    return {'u': u, 'F': F, 'D': D, 'gamma': gamma, 
+            'rho': rho, 'dx': dx, 'phiA': phiA, 'phiB': phiB}
 
 def equation_nodes(direction, position, case):
     """
@@ -117,7 +112,8 @@ def equation_nodes(direction, position, case):
     returns:
         list: value of aW, aP, aE, Su
     """
-    F, D, phiA, phiB = get_valdict(case, 'F,D,phiA,phiB')
+    keys = 'F,D,phiA,phiB'.split(',')
+    F, D, phiA, phiB = map(case.get, keys)
     if direction:
         if position.lower() == 'mid':
             aW, aE = F + D, D
@@ -168,8 +164,9 @@ def calc_matrix(mat_a, mat_d, node_set, case):
         case: dictionary of case
         
     """
-    F, nodes = get_valdict(case, 'F,nodes')
+    F = case['F']
     direction = True if F >= 0 else False
+    
     for i in range(0, nodes):
         for j in range(0, nodes):
             if i == j and i == 0:
@@ -189,9 +186,26 @@ def calc_matrix(mat_a, mat_d, node_set, case):
                 mat_a[i, j] = aP
                 mat_d[i] = Su
 
-def solve_exact(func, case, n=50):
+def prep_y(matrix, case):
     """
-    Creating axis of (x, y) for exact solution
+    Return value of y including at point A and B
+    
+    args:
+        matrix: Matrix Result from solver
+        case: dictionary of case
+    
+    returns:
+        list: value of y
+    """
+    keys = 'phiA,phiB'.split(',')
+    A, B = map(case.get, keys)
+    y_num = np.append(matrix, B)
+    y_num = np.insert(y_num, 0, A)
+    return y_num
+
+def create_xy(func, L=1, n=50):
+    """
+    Return x, y of exact solution
     
     args:
         func: exact solution function
@@ -199,80 +213,79 @@ def solve_exact(func, case, n=50):
         n: nodes (default=50)
         
     returns:
-        Axis of (x, y)
+        list (x, y)
     """
-    L, = get_valdict(case, 'L')
     x = np.linspace(0, L, n)
     y = func(x)
     return x, y
 
-def solve_num(case):
+def calc_case(dictvar, dictcase, case=1):
     """
-    Creating axis of (x, y) for numerical solution
+    Calculating case and returns coordinate numerical and exact solution
     
     args:
-        case: dictionary of case
-    
-    return:
-        Axis of (x, y)
+        dictvar: dictionary of variable/parameter
+        dictcase: dictionary of case
+        case: number of case (default=1)
+        
+    returns:
+        (x, y) numerical solution and (x, y) exact solution
     """
-    mat_a, mat_d = create_zmatrix(case)
-    calc_matrix(mat_a, mat_d, equation_nodes, case)
-    mat_x = np.linalg.solve(mat_a, mat_d)
     
-    axis = create_axis(case)
-    phiA, phiB = get_valdict(case, 'phiA,phiB')
-    ordinat = np.append(mat_x, phiB)
-    ordinat = np.insert(ordinat, 0, phiA)
     
-    sol_num = (axis, ordinat)
-    return sol_num
+    varkeys = ('dx', 'nodes', 'L', 'rho', 'gamma')
+    dx, nodes, L, rho, gamma = map(dictvar.get, varkeys)
+
+    # Buat Matrix
+    mat_a, mat_d = create_zmatrix(nodes)
+    calc_matrix(mat_a, mat_d, equation_nodes, dictcase)
+    mat_x = np.linalg.solve(mat_a, mat_d)    
+
+    # Buat x, y numerical
+    x_num = create_axis(nodes, L)
+    y_num = prep_y(mat_x, dictcase)
     
-def plot_this(ncase, numerical, exact, title=''):
+    # Exact Solution
+    if case == 1:
+        func = func_c1exact
+        x_exact, y_exact = create_xy(func, L=L)
+    elif case == 2:
+        func = func_c2exact
+        x_exact, y_exact = create_xy(func, L=L)
+    else:
+        x_exact, y_exact = 0, 0
+    
+    return (x_num, y_num), (x_exact, y_exact)
+
+def plot_this(num, x1, y1, x2, y2, title=''):
     """
     Plotting the result
-    
-    args:
-        ncase: index of case
-        numerical: (x, y) of numerical solution
-        exact: (x, y) of exact solution
-        title: title (opt, def='')
-    """
-    exact_x, exact_y = exact
-    num_x, num_y = numerical
-    plt.figure(ncase)
+    """   
+    plt.figure(num)
     plt.title(title)
     plt.xlabel('Distance x (m)')
     plt.ylabel('$\phi$')
-    plt.plot(num_x, num_y, 'bo', label='numerical')
-    plt.plot(exact_x, exact_y, 'y--', label='analytical')
+    plt.plot(x1, y1, 'bo', label='numerical')
+    plt.plot(x2, y2, 'y--', label='analytical')
     plt.legend()
     plt.grid()
+    #plt.show()
     
-def calc_error(case, numerical, func, title='Percentage Error',
+def calc_error(var, sol_num, func, title='Percentage Error',
                kolom=15, prec=6):
     """
-    Calculate and Print of Percentage Error
-    
-    args:
-        case: dictionary of case
-        numerical: list of (x, y) numerical solution
-        func: function of exact solution
-        title: string of title (optional, default="Percentage Error")
-        kolom: integer of column space (optional, default=15)
-        prec: integer of precision (optional, default=6)
+    Calculate and print of Percentage Error
     """
-    nodes, L = get_valdict(case, 'nodes,L')
-    y_num = numerical[1]
+    nodes, L = var['nodes'], var['L']
     
     node = np.arange(1, nodes+1)
-    distance = create_axis(case)[1:-1]
+    distance = create_axis(nodes, L)[1:-1]
     sol_exact = func(distance)
-    y_num = y_num[1:-1]
+    sol_num = sol_num[1:-1]
     
     diff, percenterr = [], []
     for i, val in enumerate(sol_exact):
-        dval = val - y_num[i]
+        dval = val - sol_num[i]
         diff.append(dval)
         percenterr.append(dval/val*100)
     
@@ -286,17 +299,11 @@ def calc_error(case, numerical, func, title='Percentage Error',
     
     for i in range(0, nodes):
         print('| {:^{k:d}d} | {:> {k:d}.{p:d}f} | {:> {k:d}.{p:d}f} | {:> {k:d}.{p:d}f} | {:> {k:d}.{p:d}f} | {:> {k:d}.{p:d}f} |'.format(
-                node[i], distance[i], y_num[i], sol_exact[i], diff[i], percenterr[i], k=kolom-2, p=prec
+                node[i], distance[i], sol_num[i], sol_exact[i], diff[i], percenterr[i], k=kolom-2, p=prec
                 ))
     print('='*lebar)
     
-def print_info(case, title='Case', kolom=20):
-    """
-    Print Information of case
-    
-    args:
-        case: dictionary of case
-    """
+def print_info(var, case, title='Case', kolom=20):
     def print_desc(desc, val, unit):
         print('| {:<{k:d}s} | {:> {k:d}f} | {:^{k:d}s} |'.format(
                 desc, val, unit, k=kolom-2))
@@ -308,8 +315,8 @@ def print_info(case, title='Case', kolom=20):
     print('|{:^{k:d}s}|{:^{k:d}s}|{:^{k:d}s}|'.format('description', 'value', 'unit', k=kolom))
     print('-'*lebar)
     
-    nodes, rho, gamma, dx, L = get_valdict(case, 'nodes,rho,gamma,dx,L')
-    u, F, D = get_valdict(case, 'u,F,D')
+    nodes, rho, gamma, dx, L = map(var.get, ('nodes', 'rho', 'gamma', 'dx', 'L'))
+    u, F, D = map(case.get, ('u', 'F', 'D'))
     
     print_desc('\\rho', rho, 'kg/(m^3)')
     print_desc('\\gamma', gamma, 'kg/(m.s)')
@@ -323,33 +330,30 @@ def print_info(case, title='Case', kolom=20):
     print('='*lebar)
     print()
 
-# =============================================================================
-# MAIN PROGRAM HERE
-# =============================================================================
-
+# MAIN PROGRAM Here
 if __name__ == '__main__':
     args = parse_command_line()
     var = set_var(nodes=args.nodes)
+    keys = 'dx,rho,gamma,nodes'.split(',')
+    dx, rho, gamma, nodes = map(var.get, keys)
     
     check = True if not ((args.case1) or (args.case2)) else False
     
     if args.case1 or check:
-        case1 = set_case(var, u=0.1)
-        print_info(case1)
-        exact = solve_exact(func_c1exact, case1)
-        numerical = solve_num(case1)
-        calc_error(case1, numerical, func_c1exact, title='Percentage Error Case 1')
-        plot_this(1, numerical, exact, title='case 1 $u = 0.1$')
-
+        case1 = set_case(u=0.1, dx=dx, rho=rho, gamma=gamma)
+        print_info(var, case1, title='Case 1')
+        (x1, y1), (x2, y2) = calc_case(var, case1, 1)
+        calc_error(var, y1, func_c1exact, title='Percentage Error Case 1')
+        plot_this(1, x1, y1, x2, y2, 'case 1 $u = 0.1$')
+    
     print('-'*30)
-
+    
     if args.case2 or check:
-        case2 = set_case(var, u=2.5)
-        print_info(case2)
-        exact = solve_exact(func_c2exact, case2)
-        numerical = solve_num(case2)
-        calc_error(case2, numerical, func_c2exact, title='Percentage Error Case 1')
-        plot_this(2, numerical, exact, title='case 2 $u = 2.5$')    
+        case2 = set_case(u=2.5, dx=dx, rho=rho, gamma=gamma)
+        print_info(var, case2, title='Case 2')
+        (x1, y1), (x2, y2) = calc_case(var, case2, 2)
+        calc_error(var, y1, func_c2exact, title='Percentage Error Case 2')
+        plot_this(2, x1, y1, x2, y2, 'case 2 $u = 2.5$')
     
     if not args.nofigure:
         plt.show()
