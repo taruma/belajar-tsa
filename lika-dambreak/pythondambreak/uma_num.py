@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Personal Function developed by UMA for Numerical Method Class SI-5231
+# Personal Function developed by UMA for Numerical Method
 # Code by UMA (github: github.com/taruma/belajar-tsa)
 
 from decimal import Decimal as dec
