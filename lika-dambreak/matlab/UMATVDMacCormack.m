@@ -163,7 +163,7 @@ for t = 1:tmax
         
         axis manual
         axis ([1 imax 0 2]);
-        title('Dam Break MacCormack Method');
+        title('Dam Break TVD MacCormack Method');
         xlabel('Grid (x)');
         ylabel('Elevasi(m)');
         pause(0.001)

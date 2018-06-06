@@ -272,22 +272,6 @@ h = sin(2*pi*t/T)*A;
 end
 
 function y = secantmet(yawal, dy, yit, Abm)
-%        Example Code:
-%         yawal = 5;
-%         for j = 1:yit % 5 iterasi
-%             yplus = yawal + dy;
-%             ymin = yawal - dy;
-%
-%             Fawal = A(i) - b(i)*yawal - m * yawal^2;
-%             Fplus = A(i) - b(i)*yplus - m * yplus^2;
-%             Fmin = A(i) - b(i)*ymin - m * ymin^2;
-%
-%             dF = (Fplus - Fmin) / (2*dy);
-%
-%             yfinal = yawal - Fawal/dF;
-%             yawal = yfinal;
-%         end
-%        h(i) = yfinal;
 A = Abm(1);
 b = Abm(2);
 m = Abm(3);
